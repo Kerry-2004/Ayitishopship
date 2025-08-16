@@ -1400,8 +1400,8 @@ body {
     }
     
     .logo img {
-        width: 9rem;
-        height: 6rem;
+        width: 7rem;
+        height: 5rem;
     }
     
     .hero-title {
@@ -1476,12 +1476,12 @@ body {
     }
     
     .logo img {
-        width: 10rem;
-        height: 7rem;
+        width: 8rem;
+        height: 6rem;
     }
     
     .hero {
-        padding: 1rem 0 3rem;
+        padding: 7rem 0 3rem;
     }
     
     .hero-content {
@@ -1491,11 +1491,11 @@ body {
     
     .hero-text {
         text-align: left;
-        order: 2;
+        order: 1;
     }
     
     .hero-image-section {
-        order: 1;
+        order: 2;
     }
     
     .hero-title {
