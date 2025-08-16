@@ -9,150 +9,195 @@
     <link href="styles.css" rel="stylesheet">
 </head>
 <body>
-        <!-- Header -->
-        <header class="header fixed">
-            <!-- Top bar - Desktop only -->
-            <div class="top-bar container">
-                <div class="contact-info">
-                    <span class="contact-item">
-                        <i class="fas fa-phone"></i>
-                        My Account
-                    </span>
-                </div>
-                <div class="social-links">
-                    <span>Track & Knowledge</span>
-                    <span>Our addresses</span>
-                    <span>Estimate</span>
-                    <span>About</span>
-                    <span>Support</span>
-                    <span>FR</span>
+    <!-- Header -->
+    <header class="header">
+        <!-- Top bar - Desktop only -->
+        <div class="top-bar container">
+            <div class="contact-info">
+                <span class="contact-item">
+                    <i class="fas fa-phone"></i>
+                    +1 (555) 123-4567
+                </span>
+                <span>📧 info@ayitishopship.com</span>
+            </div>
+            <div class="social-links">
+                <span>Suivez-nous:</span>
+                <div class="social-icons">
+                    <a href="#" class="social-icon">📘</a>
+                    <a href="#" class="social-icon">🐦</a>
+                    <a href="#" class="social-icon">📷</a>
                 </div>
             </div>
+        </div>
 
-            <!-- Main navigation -->
-            <div class="main-nav container">
-                <!-- Logo -->
-                <div class="logo">
-                    <img src="public/LOGO.png" alt="AyitiShop&Ship Logo">
-                </div>
-
-                <!-- Desktop Navigation -->
-                <nav class="desktop-nav">
-                    <div class="nav-item active">
-                        <a href="#accueil">
-                            <i class="fas fa-home"></i>
-                            Accueil
-                        </a>
-                    </div>
-                    <div class="nav-item dropdown">
-                        <a href="#services">
-                            <i class="fas fa-box"></i>
-                            Services
-                            <i class="fas fa-chevron-down"></i>
-                        </a>
-                        <div class="dropdown-menu">
-                            <a href="#achats">Achats en ligne</a>
-                            <a href="#express">Expédition express</a>
-                            <a href="#consolidation">Consolidation</a>
-                        </div>
-                    </div>
-                    <div class="nav-item">
-                        <a href="#suivi">
-                            <i class="fas fa-search"></i>
-                            Suivi de colis
-                        </a>
-                    </div>
-                    <div class="nav-item">
-                        <a href="#tarifs">
-                            <i class="fas fa-credit-card"></i>
-                            Tarifs
-                        </a>
-                    </div>
-                    <div class="nav-item">
-                        <a href="#contact">
-                            <i class="fas fa-phone"></i>
-                            Contact
-                        </a>
-                    </div>
-                    <button class="account-btn">
-                        <i class="fas fa-user"></i>
-                        Compte
-                    </button>
-                </nav>
-
-                <!-- Mobile Menu Button -->
-                <button class="mobile-menu-btn" id="mobileMenuBtn">
-                    <span class="hamburger"></span>
-                    <span class="hamburger"></span>
-                    <span class="hamburger"></span>
-                </button>
+        <!-- Main navigation -->
+        <div class="main-nav container">
+            <!-- Logo -->
+            <div class="logo">
+                <img src="public/LOGO.png" alt="AyitiShop&Ship Logo">
             </div>
 
-            <!-- Mobile Navigation Menu -->
-            <div class="mobile-nav" id="mobileNav">
-                <div class="mobile-nav-item active">
+            <!-- Desktop Navigation -->
+            <nav class="desktop-nav">
+                <div class="nav-item active">
                     <a href="#accueil">
                         <i class="fas fa-home"></i>
                         Accueil
                     </a>
                 </div>
-                <div class="mobile-nav-item dropdown">
-                    <a href="#services" class="dropdown-toggle">
+                <div class="nav-item dropdown">
+                    <a href="#services">
                         <i class="fas fa-box"></i>
                         Services
                         <i class="fas fa-chevron-down"></i>
                     </a>
-                    <div class="mobile-dropdown-menu">
+                    <div class="dropdown-menu">
                         <a href="#achats">Achats en ligne</a>
                         <a href="#express">Expédition express</a>
                         <a href="#consolidation">Consolidation</a>
                     </div>
                 </div>
-                <div class="mobile-nav-item">
-                    <a href="#suivi">
+                <div class="nav-item">
+                    <a href="#suivi" onclick="openTrackingModal()">
                         <i class="fas fa-search"></i>
                         Suivi de colis
                     </a>
                 </div>
-                <div class="mobile-nav-item">
+                <div class="nav-item">
                     <a href="#tarifs">
                         <i class="fas fa-credit-card"></i>
                         Tarifs
                     </a>
                 </div>
-                <div class="mobile-nav-item">
+                <div class="nav-item">
                     <a href="#contact">
                         <i class="fas fa-phone"></i>
                         Contact
                     </a>
                 </div>
-                <div class="mobile-account">
-                    <button class="account-btn">
-                        <i class="fas fa-user"></i>
-                        Mon Compte
-                    </button>
+                <button class="account-btn">
+                    <i class="fas fa-user"></i>
+                    Compte
+                </button>
+            </nav>
+
+            <!-- Mobile Menu Button -->
+            <button class="mobile-menu-btn" id="mobileMenuBtn">
+                <span class="hamburger"></span>
+                <span class="hamburger"></span>
+                <span class="hamburger"></span>
+            </button>
+        </div>
+
+        <!-- Mobile Navigation Menu -->
+        <div class="mobile-nav" id="mobileNav">
+            <div class="mobile-nav-item active">
+                <a href="#accueil">
+                    <i class="fas fa-home"></i>
+                    Accueil
+                </a>
+            </div>
+            <div class="mobile-nav-item dropdown">
+                <a href="#services" class="dropdown-toggle">
+                    <i class="fas fa-box"></i>
+                    Services
+                    <i class="fas fa-chevron-down"></i>
+                </a>
+                <div class="mobile-dropdown-menu">
+                    <a href="#achats">Achats en ligne</a>
+                    <a href="#express">Expédition express</a>
+                    <a href="#consolidation">Consolidation</a>
                 </div>
             </div>
-        </header>
-
-        <!-- Hero Section -->
-        <section class="hero hero-shippex" id="accueil">
-            <div class="hero-background">
-                <div class="hero-pattern"></div>
+            <div class="mobile-nav-item">
+                <a href="#suivi" onclick="openTrackingModal()">
+                    <i class="fas fa-search"></i>
+                    Suivi de colis
+                </a>
             </div>
-            <div class="container">
+            <div class="mobile-nav-item">
+                <a href="#tarifs">
+                    <i class="fas fa-credit-card"></i>
+                    Tarifs
+                </a>
+            </div>
+            <div class="mobile-nav-item">
+                <a href="#contact">
+                    <i class="fas fa-phone"></i>
+                    Contact
+                </a>
+            </div>
+            <div class="mobile-account">
+                <button class="account-btn">
+                    <i class="fas fa-user"></i>
+                    Mon Compte
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero" id="accueil">
+        <div class="hero-background">
+            <div class="hero-pattern"></div>
+        </div>
+        <div class="container">
             <div class="hero-content">
                 <!-- Text Content -->
                 <div class="hero-text">
                     <div class="hero-badge">
+                        ✈️ Expéditions rapides et fiables
+                    </div>
                     
+                    <h1 class="hero-title">
+                        Votre passerelle entre<br />
+                        <span class="text-red">les États-Unis</span> et <span class="text-red">Haïti</span>
+                    </h1>
+
+                    <p class="hero-description">
+                        Expéditions aériennes rapides et fiables vers Port-au-Prince,
+                        Cap-Haïtien, et Les Cayes. Votre confiance, notre priorité.
+                    </p>
+
+                    <div class="hero-buttons">
+                        <button class="btn-primary">
+                            <i class="fas fa-box"></i>
+                            Commencer un envoi
+                        </button>
+
+                        <button class="btn-secondary" onclick="openTrackingModal()">
+                            <i class="fas fa-search"></i>
+                            Suivre un colis
+                        </button>
+                    </div>
+
+                    <div class="trust-indicators">
+                        <div class="trust-item">
+                            <div class="trust-dot green"></div>
+                            <span>Service 24/7</span>
+                        </div>
+                        <div class="trust-item">
                             <div class="trust-dot blue"></div>
                             <span>Suivi en temps réel</span>
                         </div>
                         <div class="trust-item">
-                    <div class="hero-character">
-                        <img src="public/box-image.png" alt="Delivery character" class="character-image">
+                            <div class="trust-dot red"></div>
+                            <span>Livraison garantie</span>
+                        </div>
                     </div>
+                </div>
+
+                <!-- Image Section -->
+                <div class="hero-image-section">
+                    <div class="hero-image-container">
+                        <img src="public/box-image.png" alt="Box image" class="hero-image">
+                        
+                        <!-- Floating elements -->
+                        <div class="floating-element plane">✈️</div>
+                        <div class="floating-element package">📦</div>
+                    </div>
+
+                    <!-- Statistics - Desktop -->
                     <div class="statistics desktop-stats">
                         <div class="stat-card">
                             <div class="stat-value">3 +</div>
@@ -185,10 +230,12 @@
                     </div>
                 </div>
             </div>
-        </section>
+        </div>
+    </section>
 
-        <!-- Quick Actions Section -->
-        <section class="quick-actions">
+    <!-- Quick Actions Section -->
+    <section class="quick-actions">
+        <div class="container">
             <div class="quick-actions-content">
                 <h2 class="quick-actions-title">Actions Rapides</h2>
                 <div class="quick-actions-grid">
@@ -196,54 +243,50 @@
                         <div class="quick-action-icon">
                             <i class="fas fa-shopping-cart"></i>
                         </div>
-                </div>
-            </div>
-            </div>
-        </section>
-
-        <section class="services" id="services">
-        <!-- Services Cards Section -->
-        <section class="services-cards" id="services">
-            <div class="container">
-                <div class="services-grid-shippex">
-                    <div class="service-card-shippex">
-                        <div class="service-icon-shippex">
-                            <i class="fas fa-box"></i>
-                        </div>
-                        <h3>Send a package</h3>
-                        <p>ShippEx helps you sending packages to your loved ones anywhere in the world.</p>
-                        <button class="service-btn">CHECK OUR SERVICES</button>
+                        <h3>Faire des Achats</h3>
+                        <p>Commandez sur vos sites préférés et nous nous occupons de la livraison</p>
+                        <button class="quick-action-btn">Commencer</button>
                     </div>
                     
-                    <div class="service-card-shippex orange">
-                        <div class="service-icon-shippex">
-                            <i class="fas fa-shopping-cart"></i>
+                    <div class="quick-action-card">
+                        <div class="quick-action-icon">
+                            <i class="fas fa-search"></i>
                         </div>
-                        <h3>Online purchase</h3>
-                        <p>We can make online purchases on your behalf and ship them to your destination.</p>
-                        <button class="service-btn">PURCHASE FOR ME</button>
+                        <h3>Suivre un Colis</h3>
+                        <p>Suivez votre colis en temps réel depuis l'expédition jusqu'à la livraison</p>
+                        <button class="quick-action-btn" onclick="openTrackingModal()">Suivre</button>
                     </div>
                     
-                    <div class="service-card-shippex orange">
-                        <div class="service-icon-shippex">
-                            <i class="fas fa-map-marker-alt"></i>
-                        </div>
-                        <h3>Our addresses</h3>
-                        <p>We have many of our addresses in different countries. Check them out.</p>
-                        <button class="service-btn">VIEW MORE</button>
-                    </div>
-                    
-                    <div class="service-card-shippex orange">
-                        <div class="service-icon-shippex">
+                    <div class="quick-action-card">
+                        <div class="quick-action-icon">
                             <i class="fas fa-calculator"></i>
                         </div>
-                        <h3>Calculator</h3>
-                        <p>We can estimate with our calculator the cost of your package.</p>
-                        <button class="service-btn">CALCULATE</button>
+                        <h3>Calculer Tarifs</h3>
+                        <p>Obtenez un devis instantané pour vos expéditions</p>
+                        <button class="quick-action-btn">Calculer</button>
                     </div>
                 </div>
             </div>
-        </section>
+        </div>
+    </section>
+
+    <!-- Services Section -->
+    <section class="services" id="services">
+        <div class="container">
+            <div class="section-header">
+                <div class="section-badge">
+                    🚀 Nos Services
+                </div>
+                
+                <h2 class="section-title">
+                    Des services adaptés à vos besoins
+                </h2>
+
+                <p class="section-description">
+                    Découvrez nos solutions conçues pour rendre vos expéditions simples,
+                    rapides et fiables.
+                </p>
+            </div>
 
             <div class="services-grid">
                 <div class="service-card">
@@ -276,10 +319,12 @@
                     </p>
                 </div>
             </div>
-        </section>
+        </div>
+    </section>
 
-        <!-- Pricing Section -->
-        <section class="pricing" id="tarifs">
+    <!-- Pricing Section -->
+    <section class="pricing" id="tarifs">
+        <div class="container">
             <div class="section-header">
                 <div class="section-badge">
                     <i class="fas fa-dollar-sign"></i>
@@ -311,46 +356,93 @@
                 </div>
 
                 <div class="pricing-card featured">
-        <!-- How to send section -->
-        <section class="how-to-send">
-            <div class="container">
-                <div class="how-to-content">
-                    <div class="how-to-text">
-                        <h2>How to send packages with <span class="shippex-brand">ShippEx</span>?</h2>
-                        <p>Our shipping services offering efficiency ShippEx creates a new service called packages that will give packages delivered. Get a personalized address, which can be used to send packages online. Once your packages are delivered to our warehouse, ShippEx can be used once online or over by your courier at your door.</p>
-        <!-- App Download Section -->
-        <section class="app-download">
-            <div class="container">
-                <div class="app-content">
-                    <h2>Download the app</h2>
-                    <p>Track your packages in real time, receive your packages tracking alerts and take advantage of all our features.</p>
-                    <div class="app-buttons">
-                        <button class="app-btn">
-                            <i class="fab fa-apple"></i>
-                            <span>Download on<br><strong>App Store</strong></span>
-                        </button>
-                        <button class="app-btn">
-                            <i class="fab fa-google-play"></i>
-                            <span>Get it on<br><strong>Google Play</strong></span>
-                        </button>
+                    <div class="pricing-badge">Populaire</div>
+                    <div class="pricing-header">
+                        <h3>Express</h3>
+                        <div class="price">$12<span>/lb</span></div>
                     </div>
+                    <ul class="pricing-features">
+                        <li><i class="fas fa-check"></i> Livraison 3-5 jours</li>
+                        <li><i class="fas fa-check"></i> Suivi prioritaire</li>
+                        <li><i class="fas fa-check"></i> Assurance complète</li>
+                        <li><i class="fas fa-check"></i> Support prioritaire</li>
+                        <li><i class="fas fa-check"></i> Notification SMS</li>
+                    </ul>
+                    <button class="pricing-btn">Choisir ce plan</button>
+                </div>
+
+                <div class="pricing-card">
+                    <div class="pricing-header">
+                        <h3>Premium</h3>
+                        <div class="price">$15<span>/lb</span></div>
+                    </div>
+                    <ul class="pricing-features">
+                        <li><i class="fas fa-check"></i> Livraison 1-2 jours</li>
+                        <li><i class="fas fa-check"></i> Suivi en temps réel</li>
+                        <li><i class="fas fa-check"></i> Assurance premium</li>
+                        <li><i class="fas fa-check"></i> Support dédié 24/7</li>
+                        <li><i class="fas fa-check"></i> Livraison à domicile</li>
+                    </ul>
+                    <button class="pricing-btn">Choisir ce plan</button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Why Choose Section -->
+    <section class="why-choose">
+        <div class="container">
+            <div class="why-choose-content">
+                <!-- Left Content -->
+                <div class="why-choose-left">
+                    <div class="section-badge">
+                        ⭐ Pourquoi nous choisir
+                    </div>
+                    
+                    <h2 class="section-title">
+                        Pourquoi choisir<br />
+                        <span class="text-red">AyitiShop&Ship</span> ?
+                    </h2>
+
+                    <p class="why-choose-subtitle">
+                        Une expérience de confiance et<br />
+                        de qualité à chaque étape
+                    </p>
+
+                    <!-- Features list -->
+                    <div class="features-list">
+                        <div class="feature-item">
+                            <div class="feature-icon green">✓</div>
+                            <span>Livraison rapide et sécurisée</span>
+                        </div>
+                        <div class="feature-item">
+                            <div class="feature-icon blue">✓</div>
+                            <span>Suivi en temps réel 24/7</span>
+                        </div>
+                        <div class="feature-item">
                             <div class="feature-icon red">✓</div>
-                <div class="app-phones">
-                    <div class="phone-mockup">
-                        <img src="public/box-image.png" alt="App screenshot 1">
+                            <span>Support client exceptionnel</span>
+                        </div>
                     </div>
-                    <div class="phone-mockup">
-                        <img src="public/box-image.png" alt="App screenshot 2">
-                    </div>
-                    <div class="phone-mockup">
-                        <img src="public/box-image.png" alt="App screenshot 3">
+                </div>
+
+                <!-- Right Content - Image -->
+                <div class="why-choose-right">
+                    <div class="why-choose-image-container">
+                        <img src="public/image-2-1.png" alt="Image" class="why-choose-image">
+                        
+                        <!-- Decorative elements -->
+                        <div class="decorative-element blue"></div>
+                        <div class="decorative-element red"></div>
                     </div>
                 </div>
             </div>
-        </section>
+        </div>
+    </section>
 
-        <!-- Contact Section -->
-        <section class="contact" id="contact">
+    <!-- Contact Section -->
+    <section class="contact" id="contact">
+        <div class="container">
             <div class="contact-content">
                 <div class="contact-left">
                     <div class="section-badge">
@@ -435,10 +527,12 @@
                     </form>
                 </div>
             </div>
-        </section>
+        </div>
+    </section>
 
-        <!-- Footer -->
-        <footer class="footer">
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
             <div class="footer-content">
                 <div class="footer-section">
                     <div class="footer-logo">
@@ -503,160 +597,31 @@
                     </div>
                 </div>
             </div>
-        </footer>
+        </div>
+    </footer>
 
-        <!-- Tracking Modal -->
-        <div id="trackingModal" class="modal">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h3>Suivre votre colis</h3>
-                    <span class="modal-close" onclick="closeTrackingModal()">&times;</span>
-                </div>
-                <div class="modal-body">
-                    <form onsubmit="trackPackage(event)">
-                        <div class="form-group">
-                            <label for="trackingNumber">Numéro de suivi</label>
-                            <input type="text" id="trackingNumber" placeholder="Entrez votre numéro de suivi" required>
-                        </div>
-                        <button type="submit" class="modal-btn">
-                            <i class="fas fa-search"></i>
-                            Suivre le colis
-                        </button>
-                    </form>
-                    <div id="trackingResult" class="tracking-result"></div>
-                </div>
+    <!-- Tracking Modal -->
+    <div id="trackingModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Suivre votre colis</h3>
+                <span class="modal-close" onclick="closeTrackingModal()">&times;</span>
             </div>
-        <!-- Stats Section -->
-        <section class="stats-section">
-            <div class="container">
-                <h2>Delivery between USA, Haiti and Turks & Caicos</h2>
-                <div class="stats-grid">
-                    <div class="stat-item">
-                        <div class="stat-icon">
-                            <i class="fas fa-box"></i>
-                        </div>
-                        <div class="stat-number">300000 +</div>
-                        <div class="stat-label">Packages Delivered</div>
+            <div class="modal-body">
+                <form onsubmit="trackPackage(event)">
+                    <div class="form-group">
+                        <label for="trackingNumber">Numéro de suivi</label>
+                        <input type="text" id="trackingNumber" placeholder="Entrez votre numéro de suivi" required>
                     </div>
-                    <div class="stat-item">
-                        <div class="stat-icon">
-                            <i class="fas fa-users"></i>
-                        </div>
-                        <div class="stat-number">22000 +</div>
-                        <div class="stat-label">Satisfied Customers</div>
-                    </div>
-                    <div class="stat-item">
-                        <div class="stat-icon">
-                            <i class="fas fa-map-marker-alt"></i>
-                        </div>
-                        <div class="stat-number">23 +</div>
-                        <div class="stat-label">Available Cities</div>
-                    </div>
-                    <div class="stat-item">
-                        <div class="stat-icon">
-                            <i class="fas fa-star"></i>
-                        </div>
-                        <div class="stat-number">4 +</div>
-                        <div class="stat-label">Years of experience</div>
-                    </div>
-                </div>
+                    <button type="submit" class="modal-btn">
+                        <i class="fas fa-search"></i>
+                        Suivre le colis
+                    </button>
+                </form>
+                <div id="trackingResult" class="tracking-result"></div>
             </div>
-        </section>
-
-        <!-- FAQ Section -->
-        <section class="faq-section">
-            <div class="container">
-                <h2>Frequently Asked Questions</h2>
-                <p>Here are some of the most frequently asked questions about ShippEx</p>
-                <div class="faq-list">
-                    <div class="faq-item">
-                        <div class="faq-question">
-                            <span>How can I track my package?</span>
-                            <i class="fas fa-plus"></i>
-                        </div>
-                    </div>
-                    <div class="faq-item">
-                        <div class="faq-question">
-                            <span>What is ShippEx services?</span>
-                            <i class="fas fa-plus"></i>
-                        </div>
-                    </div>
-                    <div class="faq-item">
-                        <div class="faq-question">
-                            <span>What forms of payment are acceptable?</span>
-                            <i class="fas fa-plus"></i>
-                        </div>
-                    </div>
-                    <div class="faq-item">
-                        <div class="faq-question">
-                            <span>When will my package arrive?</span>
-                            <i class="fas fa-plus"></i>
-                        </div>
-                    </div>
-                    <div class="faq-item">
-                        <div class="faq-question">
-                            <span>Is my package insured?</span>
-                            <i class="fas fa-plus"></i>
-                        </div>
-                    </div>
-                    <div class="faq-item">
-                        <div class="faq-question">
-                            <span>Where does ShippEx ship?</span>
-                            <i class="fas fa-plus"></i>
-                        </div>
-                    </div>
-                    <div class="faq-item">
-                        <div class="faq-question">
-                            <span>How is the shipping rate calculated?</span>
-                            <i class="fas fa-plus"></i>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- Footer -->
-        <footer class="footer-shippex">
-            <div class="container">
-                <div class="footer-content">
-                    <div class="footer-section">
-                        <h4>PHONE</h4>
-                        <ul>
-                            <li>+1 786 358 3994</li>
-                            <li>+1 786 358 3994</li>
-                            <li>+509 4816 1547</li>
-                        </ul>
-                    </div>
-                    <div class="footer-section">
-                        <h4>USA</h4>
-                        <ul>
-                            <li>ATLANTA</li>
-                            <li>BOSTON</li>
-                            <li>GREAT BEACH</li>
-                            <li>MIAMI</li>
-                        </ul>
-                    </div>
-                    <div class="footer-section">
-                        <h4>HAITI</h4>
-                        <ul>
-                            <li>AIRPORT / DELMAS 83</li>
-                            <li>CAP-HAITIEN</li>
-                            <li>CARREFOUR</li>
-                            <li>CROIX-DES-BOUQUETS</li>
-                        </ul>
-                    </div>
-                </div>
-                <div class="footer-bottom">
-                    <p>Copyright 2024 ShippEx All rights reserved</p>
-                    <div class="footer-links">
-                        <a href="#">My Account</a>
-                        <a href="#">Terms and conditions</a>
-                        <a href="#">Privacy Policy</a>
-                        <a href="#">About us</a>
-                    </div>
-                </div>
-            </div>
-        </footer>
+        </div>
+    </div>
 
     <script src="/script.js"></script>
 </body>
