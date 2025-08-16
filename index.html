@@ -149,8 +149,8 @@
         <!-- Hero Section -->
         <section class="hero" id="accueil">
             <div class="hero-content">
-                <!-- Left Content -->
-                <div class="hero-left">
+                <!-- Text Content -->
+                <div class="hero-text">
                     <div class="hero-badge">
                         <i class="fas fa-plane"></i>
                         Expéditions rapides et fiables
@@ -194,8 +194,8 @@
                     </div>
                 </div>
 
-                <!-- Right Content -->
-                <div class="hero-right">
+                <!-- Image Content -->
+                <div class="hero-image-section">
                     <div class="hero-image-container">
                         <img src="public/Box.png" alt="Box image" class="hero-image">
                         
@@ -234,6 +234,45 @@
                             <div class="stat-value">800+</div>
                             <div class="stat-label">Expertist</div>
                         </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Quick Actions Section -->
+        <section class="quick-actions">
+            <div class="quick-actions-content">
+                <h2 class="quick-actions-title">Actions Rapides</h2>
+                <div class="quick-actions-grid">
+                    <div class="quick-action-card">
+                        <div class="quick-action-icon">
+                            <i class="fas fa-shopping-cart"></i>
+                        </div>
+                        <h3>Faire des Achats</h3>
+                        <p>Commandez sur Amazon, eBay, AliExpress et plus</p>
+                        <button class="quick-action-btn" onclick="scrollToSection('services')">
+                            Commencer
+                        </button>
+                    </div>
+                    <div class="quick-action-card">
+                        <div class="quick-action-icon">
+                            <i class="fas fa-search"></i>
+                        </div>
+                        <h3>Suivre un Colis</h3>
+                        <p>Vérifiez le statut de votre expédition en temps réel</p>
+                        <button class="quick-action-btn" onclick="openTrackingModal()">
+                            Suivre
+                        </button>
+                    </div>
+                    <div class="quick-action-card">
+                        <div class="quick-action-icon">
+                            <i class="fas fa-calculator"></i>
+                        </div>
+                        <h3>Calculer Tarifs</h3>
+                        <p>Estimez le coût de votre expédition</p>
+                        <button class="quick-action-btn" onclick="scrollToSection('tarifs')">
+                            Calculer
+                        </button>
                     </div>
                 </div>
             </div>
@@ -290,6 +329,71 @@
             </div>
         </section>
 
+        <!-- Pricing Section -->
+        <section class="pricing" id="tarifs">
+            <div class="section-header">
+                <div class="section-badge">
+                    <i class="fas fa-dollar-sign"></i>
+                    Nos Tarifs
+                </div>
+                
+                <h2 class="section-title">
+                    Tarifs Transparents et Compétitifs
+                </h2>
+
+                <p class="section-description">
+                    Des prix clairs sans frais cachés pour toutes vos expéditions
+                </p>
+            </div>
+
+            <div class="pricing-grid">
+                <div class="pricing-card">
+                    <div class="pricing-header">
+                        <h3>Standard</h3>
+                        <div class="price">$8<span>/lb</span></div>
+                    </div>
+                    <ul class="pricing-features">
+                        <li><i class="fas fa-check"></i> Livraison 7-10 jours</li>
+                        <li><i class="fas fa-check"></i> Suivi inclus</li>
+                        <li><i class="fas fa-check"></i> Assurance de base</li>
+                        <li><i class="fas fa-check"></i> Support client</li>
+                    </ul>
+                    <button class="pricing-btn">Choisir ce plan</button>
+                </div>
+
+                <div class="pricing-card featured">
+                    <div class="pricing-badge">Populaire</div>
+                    <div class="pricing-header">
+                        <h3>Express</h3>
+                        <div class="price">$12<span>/lb</span></div>
+                    </div>
+                    <ul class="pricing-features">
+                        <li><i class="fas fa-check"></i> Livraison 3-5 jours</li>
+                        <li><i class="fas fa-check"></i> Suivi en temps réel</li>
+                        <li><i class="fas fa-check"></i> Assurance complète</li>
+                        <li><i class="fas fa-check"></i> Support prioritaire</li>
+                        <li><i class="fas fa-check"></i> Emballage sécurisé</li>
+                    </ul>
+                    <button class="pricing-btn">Choisir ce plan</button>
+                </div>
+
+                <div class="pricing-card">
+                    <div class="pricing-header">
+                        <h3>Premium</h3>
+                        <div class="price">$15<span>/lb</span></div>
+                    </div>
+                    <ul class="pricing-features">
+                        <li><i class="fas fa-check"></i> Livraison 1-3 jours</li>
+                        <li><i class="fas fa-check"></i> Suivi GPS</li>
+                        <li><i class="fas fa-check"></i> Assurance premium</li>
+                        <li><i class="fas fa-check"></i> Support 24/7</li>
+                        <li><i class="fas fa-check"></i> Livraison à domicile</li>
+                    </ul>
+                    <button class="pricing-btn">Choisir ce plan</button>
+                </div>
+            </div>
+        </section>
+
         <!-- Why Choose Section -->
         <section class="why-choose">
             <div class="why-choose-content">
@@ -339,6 +443,186 @@
                 </div>
             </div>
         </section>
+
+        <!-- Contact Section -->
+        <section class="contact" id="contact">
+            <div class="contact-content">
+                <div class="contact-left">
+                    <div class="section-badge">
+                        <i class="fas fa-envelope"></i>
+                        Contactez-nous
+                    </div>
+                    
+                    <h2 class="section-title">
+                        Besoin d'aide ?<br>
+                        <span class="text-red">Nous sommes là</span>
+                    </h2>
+
+                    <p class="contact-description">
+                        Notre équipe est disponible pour répondre à toutes vos questions
+                        et vous accompagner dans vos expéditions.
+                    </p>
+
+                    <div class="contact-info">
+                        <div class="contact-item">
+                            <div class="contact-icon">
+                                <i class="fas fa-phone"></i>
+                            </div>
+                            <div class="contact-details">
+                                <h4>Téléphone</h4>
+                                <p>+1 (508) 246-3522</p>
+                            </div>
+                        </div>
+                        <div class="contact-item">
+                            <div class="contact-icon">
+                                <i class="fas fa-envelope"></i>
+                            </div>
+                            <div class="contact-details">
+                                <h4>Email</h4>
+                                <p>info@ayitishopship.com</p>
+                            </div>
+                        </div>
+                        <div class="contact-item">
+                            <div class="contact-icon">
+                                <i class="fas fa-clock"></i>
+                            </div>
+                            <div class="contact-details">
+                                <h4>Horaires</h4>
+                                <p>Lun-Ven: 8h-18h EST</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="contact-right">
+                    <form class="contact-form" onsubmit="submitContactForm(event)">
+                        <div class="form-group">
+                            <label for="name">Nom complet</label>
+                            <input type="text" id="name" name="name" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="email">Email</label>
+                            <input type="email" id="email" name="email" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="phone">Téléphone</label>
+                            <input type="tel" id="phone" name="phone">
+                        </div>
+                        <div class="form-group">
+                            <label for="subject">Sujet</label>
+                            <select id="subject" name="subject" required>
+                                <option value="">Choisir un sujet</option>
+                                <option value="tracking">Suivi de colis</option>
+                                <option value="pricing">Questions sur les tarifs</option>
+                                <option value="shipping">Nouvelle expédition</option>
+                                <option value="support">Support technique</option>
+                                <option value="other">Autre</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="message">Message</label>
+                            <textarea id="message" name="message" rows="5" required></textarea>
+                        </div>
+                        <button type="submit" class="contact-submit-btn">
+                            <i class="fas fa-paper-plane"></i>
+                            Envoyer le message
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </section>
+
+        <!-- Footer -->
+        <footer class="footer">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <div class="footer-logo">
+                        <img src="public/LOGO.png" alt="AyitiShop&Ship Logo">
+                    </div>
+                    <p class="footer-description">
+                        Votre partenaire de confiance pour toutes vos expéditions 
+                        entre les États-Unis et Haïti.
+                    </p>
+                    <div class="footer-social">
+                        <a href="#" class="footer-social-link">
+                            <i class="fab fa-facebook-f"></i>
+                        </a>
+                        <a href="#" class="footer-social-link">
+                            <i class="fab fa-twitter"></i>
+                        </a>
+                        <a href="#" class="footer-social-link">
+                            <i class="fab fa-instagram"></i>
+                        </a>
+                        <a href="#" class="footer-social-link">
+                            <i class="fab fa-youtube"></i>
+                        </a>
+                    </div>
+                </div>
+
+                <div class="footer-section">
+                    <h4>Services</h4>
+                    <ul class="footer-links">
+                        <li><a href="#services">Achats en ligne</a></li>
+                        <li><a href="#services">Expédition express</a></li>
+                        <li><a href="#services">Consolidation</a></li>
+                        <li><a href="#suivi">Suivi de colis</a></li>
+                    </ul>
+                </div>
+
+                <div class="footer-section">
+                    <h4>Support</h4>
+                    <ul class="footer-links">
+                        <li><a href="#contact">Contact</a></li>
+                        <li><a href="#tarifs">Tarifs</a></li>
+                        <li><a href="#">FAQ</a></li>
+                        <li><a href="#">Conditions</a></li>
+                    </ul>
+                </div>
+
+                <div class="footer-section">
+                    <h4>Contact</h4>
+                    <div class="footer-contact">
+                        <p><i class="fas fa-phone"></i> +1 (508) 246-3522</p>
+                        <p><i class="fas fa-envelope"></i> info@ayitishopship.com</p>
+                        <p><i class="fas fa-map-marker-alt"></i> États-Unis - Haïti</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="footer-bottom">
+                <div class="footer-bottom-content">
+                    <p>&copy; 2024 AyitiShop&Ship. Tous droits réservés.</p>
+                    <div class="footer-bottom-links">
+                        <a href="#">Politique de confidentialité</a>
+                        <a href="#">Conditions d'utilisation</a>
+                    </div>
+                </div>
+            </div>
+        </footer>
+
+        <!-- Tracking Modal -->
+        <div id="trackingModal" class="modal">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3>Suivre votre colis</h3>
+                    <span class="modal-close" onclick="closeTrackingModal()">&times;</span>
+                </div>
+                <div class="modal-body">
+                    <form onsubmit="trackPackage(event)">
+                        <div class="form-group">
+                            <label for="trackingNumber">Numéro de suivi</label>
+                            <input type="text" id="trackingNumber" placeholder="Entrez votre numéro de suivi" required>
+                        </div>
+                        <button type="submit" class="modal-btn">
+                            <i class="fas fa-search"></i>
+                            Suivre le colis
+                        </button>
+                    </form>
+                    <div id="trackingResult" class="tracking-result"></div>
+                </div>
+            </div>
+        </div>
+
     </div>
 
     <script src="script.js"></script>
