@@ -31,6 +31,14 @@ mobileNavLinks.forEach(link => {
     });
 });
 
+// Account button functionality
+const accountBtns = document.querySelectorAll('.account-btn');
+accountBtns.forEach(btn => {
+    btn.addEventListener('click', function() {
+        openAccountModal();
+    });
+});
+
 // Smooth scrolling for anchor links
 const anchorLinks = document.querySelectorAll('a[href^="#"]');
 
