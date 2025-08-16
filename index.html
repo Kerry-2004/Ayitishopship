@@ -77,7 +77,7 @@
                 </div>
                 <button class="account-btn">
                     <i class="fas fa-user"></i>
-                    Compte
+                    <span onclick="openAccountModal()">Compte</span>
                 </button>
             </nav>
 
@@ -128,7 +128,7 @@
                 </a>
             </div>
             <div class="mobile-account">
-                <button class="account-btn">
+                <button class="account-btn" onclick="openAccountModal()">
                     <i class="fas fa-user"></i>
                     Mon Compte
                 </button>
@@ -619,6 +619,77 @@
                     </button>
                 </form>
                 <div id="trackingResult" class="tracking-result"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Account Modal -->
+    <div id="accountModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Mon Compte</h3>
+                <span class="modal-close" onclick="closeAccountModal()">&times;</span>
+            </div>
+            <div class="modal-body">
+                <div class="account-tabs">
+                    <button class="tab-btn active" onclick="showTab('login')">Connexion</button>
+                    <button class="tab-btn" onclick="showTab('register')">Inscription</button>
+                </div>
+                
+                <!-- Login Form -->
+                <div id="loginTab" class="tab-content active">
+                    <form onsubmit="handleLogin(event)">
+                        <div class="form-group">
+                            <label for="loginEmail">Email</label>
+                            <input type="email" id="loginEmail" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="loginPassword">Mot de passe</label>
+                            <input type="password" id="loginPassword" required>
+                        </div>
+                        <button type="submit" class="modal-btn">
+                            <i class="fas fa-sign-in-alt"></i>
+                            Se connecter
+                        </button>
+                        <p class="forgot-password">
+                            <a href="#" onclick="showForgotPassword()">Mot de passe oublié ?</a>
+                        </p>
+                    </form>
+                </div>
+                
+                <!-- Register Form -->
+                <div id="registerTab" class="tab-content">
+                    <form onsubmit="handleRegister(event)">
+                        <div class="form-group">
+                            <label for="registerName">Nom complet</label>
+                            <input type="text" id="registerName" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="registerEmail">Email</label>
+                            <input type="email" id="registerEmail" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="registerPhone">Téléphone</label>
+                            <input type="tel" id="registerPhone" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="registerPassword">Mot de passe</label>
+                            <input type="password" id="registerPassword" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="confirmPassword">Confirmer le mot de passe</label>
+                            <input type="password" id="confirmPassword" required>
+                        </div>
+                        <div class="form-group checkbox-group">
+                            <input type="checkbox" id="acceptTerms" required>
+                            <label for="acceptTerms">J'accepte les <a href="#">conditions d'utilisation</a></label>
+                        </div>
+                        <button type="submit" class="modal-btn">
+                            <i class="fas fa-user-plus"></i>
+                            Créer mon compte
+                        </button>
+                    </form>
+                </div>
             </div>
         </div>
     </div>

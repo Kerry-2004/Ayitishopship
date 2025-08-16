@@ -201,3 +201,107 @@ style.textContent = `
     }
 `;
 document.head.appendChild(style);
+// Account Modal Functions
+function openAccountModal() {
+    document.getElementById('accountModal').style.display = 'block';
+    document.body.style.overflow = 'hidden';
+}
+
+function closeAccountModal() {
+    document.getElementById('accountModal').style.display = 'none';
+    document.body.style.overflow = 'auto';
+}
+
+function showTab(tabName) {
+    // Hide all tabs
+    document.querySelectorAll('.tab-content').forEach(tab => {
+        tab.classList.remove('active');
+    });
+    document.querySelectorAll('.tab-btn').forEach(btn => {
+        btn.classList.remove('active');
+    });
+    
+    // Show selected tab
+    document.getElementById(tabName + 'Tab').classList.add('active');
+    event.target.classList.add('active');
+}
+
+function handleLogin(event) {
+    event.preventDefault();
+    const email = document.getElementById('loginEmail').value;
+    const password = document.getElementById('loginPassword').value;
+    
+    // Show loading state
+    const submitBtn = event.target.querySelector('button[type="submit"]');
+    const originalText = submitBtn.innerHTML;
+    submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Connexion...';
+    submitBtn.disabled = true;
+    
+    // Simulate login
+    setTimeout(() => {
+        submitBtn.innerHTML = '<i class="fas fa-check"></i> Connecté!';
+        submitBtn.style.background = '#10b981';
+        
+        setTimeout(() => {
+            closeAccountModal();
+            alert('Connexion réussie! Bienvenue ' + email);
+            // Reset form
+            event.target.reset();
+            submitBtn.innerHTML = originalText;
+            submitBtn.style.background = '';
+            submitBtn.disabled = false;
+        }, 1500);
+    }, 2000);
+}
+
+function handleRegister(event) {
+    event.preventDefault();
+    const name = document.getElementById('registerName').value;
+    const email = document.getElementById('registerEmail').value;
+    const phone = document.getElementById('registerPhone').value;
+    const password = document.getElementById('registerPassword').value;
+    const confirmPassword = document.getElementById('confirmPassword').value;
+    
+    // Validate passwords match
+    if (password !== confirmPassword) {
+        alert('Les mots de passe ne correspondent pas!');
+        return;
+    }
+    
+    // Show loading state
+    const submitBtn = event.target.querySelector('button[type="submit"]');
+    const originalText = submitBtn.innerHTML;
+    submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Création...';
+    submitBtn.disabled = true;
+    
+    // Simulate registration
+    setTimeout(() => {
+        submitBtn.innerHTML = '<i class="fas fa-check"></i> Compte créé!';
+        submitBtn.style.background = '#10b981';
+        
+        setTimeout(() => {
+            closeAccountModal();
+            alert('Compte créé avec succès! Bienvenue ' + name + '!');
+            // Reset form
+            event.target.reset();
+            submitBtn.innerHTML = originalText;
+            submitBtn.style.background = '';
+            submitBtn.disabled = false;
+        }, 1500);
+    }, 2000);
+}
+
+function showForgotPassword() {
+    const email = prompt('Entrez votre adresse email pour réinitialiser votre mot de passe:');
+    if (email) {
+        alert('Un email de réinitialisation a été envoyé à ' + email);
+    }
+}
+
+// Close account modal when clicking outside
+window.addEventListener('click', function(event) {
+    const accountModal = document.getElementById('accountModal');
+    if (event.target === accountModal) {
+        closeAccountModal();
+    }
+});
