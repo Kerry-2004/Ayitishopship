@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Suivi de Colis</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+  <style>
+    body {
+      font-family: 'Poppins', sans-serif;
+      margin: 20px;
+      background-color: #f7f7f7;
+    }
+    .container {
+      max-width: 500px;
+      margin: auto;
+      padding: 20px;
+      background-color: white;
+      border-radius: 8px;
+      box-shadow: 0 0 15px rgba(0,0,0,0.1);
+    }
+    h2 {
+      color: #001b72;
+      text-align: center;
+    }
+    label {
+      display: block;
+      margin-bottom: 8px;
+      font-weight: 600;
+      color: #001b72;
+    }
+    input, button {
+      width: 100%;
+      padding: 12px;
+      margin-bottom: 15px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      font-size: 16px;
+      box-sizing: border-box;
+    }
+    button {
+      background-color: #001b72;
+      color: white;
+      cursor: pointer;
+      font-weight: 600;
+    }
+    button:hover {
+      background-color: #ea002a;
+    }
+    .result {
+      margin-top: 20px;
+      padding: 15px;
+      border: 1px solid #001b72;
+      border-radius: 5px;
+      background-color: #f0f8ff;
+      color: #001b72;
+      font-weight: 600;
+    }
+  </style>
+</head>
+<body>
+
+<div class="container">
+  <h2>📦 Suivi de Colis</h2>
+  <form id="trackingForm">
+    <label for="trackingNumber">Entrez votre numéro de suivi :</label>
+    <input type="text" id="trackingNumber" placeholder="Ex: AYITI12345" required>
+    <button type="button" onclick="trackPackage()">Vérifier le suivi</button>
+  </form>
+
+  <div id="result" class="result" style="display:none;"></div>
+</div>
+
+<script>
+  function trackPackage() {
+    const trackingNumber = document.getElementById("trackingNumber").value.trim();
+    const resultDiv = document.getElementById("result");
+
+    if (!trackingNumber) {
+      alert("Veuillez entrer un numéro de suivi valide.");
+      return;
+    }
+
+    // 🔹 Exemple de suivi simulé (plus tard on pourra connecter une base de données)
+    let status = "";
+    if (trackingNumber.startsWith("AYITI")) {
+      status = "✅ Votre colis est en transit vers Haïti.";
+    } else if (trackingNumber.startsWith("USA")) {
+      status = "📦 Votre colis est en préparation aux États-Unis.";
+    } else if (trackingNumber.startsWith("DEL")) {
+      status = "🚚 Votre colis est en cours de livraison.";
+    } else {
+      status = "❌ Numéro de suivi introuvable. Vérifiez et réessayez.";
+    }
+
+    resultDiv.style.display = "block";
+    resultDiv.textContent = `Suivi [${trackingNumber}] : ${status}`;
+  }
+</script>
+
+</body>
+</html>

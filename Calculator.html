@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calcul du Coût d'Expédition</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            margin: 20px;
+            background-color: #f7f7f7;
+        }
+        .container {
+            max-width: 500px;
+            margin: auto;
+            padding: 20px;
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+        }
+        h2 {
+            color: #001b72;
+            text-align: center;
+        }
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #001b72;
+        }
+        input, select, button {
+            width: 100%;
+            padding: 12px;
+            margin-bottom: 15px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size: 16px;
+            box-sizing: border-box;
+        }
+        button {
+            background-color: #001b72;
+            color: white;
+            cursor: pointer;
+            font-weight: 600;
+        }
+        button:hover {
+            background-color: #ea002a;
+        }
+        .result {
+            margin-top: 20px;
+            padding: 15px;
+            border: 1px solid #001b72;
+            border-radius: 5px;
+            background-color: #f0f8ff;
+            color: #001b72;
+            font-weight: 600;
+        }
+        @media (max-width: 600px) {
+            .container {
+                padding: 15px;
+            }
+            button {
+                font-size: 14px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h2>Calcul du Coût d'Expédition</h2>
+    <form id="shippingForm">
+        <label for="weight">Poids du colis (en lbs) :</label>
+        <input type="number" id="weight" placeholder="Entrez le poids en livres" required>
+
+        <label for="city">Ville :</label>
+        <select id="city" required>
+            <option value="">-- Sélectionnez votre ville --</option>
+            <option value="Les Cayes">Les Cayes</option>
+            <option value="Port-au-Prince">Port-au-Prince</option>
+            <option value="Cap-Haïtien">Cap-Haïtien</option>
+        </select>
+
+        <button type="button" onclick="calculateShippingCost()">Calculer le Coût</button>
+    </form>
+
+    <div id="result" class="result" style="display: none;"></div>
+    <p class="note" style="color:#ea002a; font-weight:600; margin-top:10px;">
+⚠️ Attention : Les tarifs indiqués ci-dessus s’appliquent uniquement aux colis envoyés au poids.<br>
+Pour les <strong>appareils électroniques</strong>, un tarif fixe est appliqué selon le type d’appareil :
+</p>
+
+<ul style="color:#001b72; font-weight:600; margin-bottom:20px;">
+  <li>Laptop : $70</li>
+  <li>Tablet : $40</li>
+  <li>Camera : $50</li>
+  <li>Kit Starlink : $120</li>
+  <li>Téléphone : $35</li>
+  <li>iPhone 12 à 16 Pro : $40</li>
+</ul>
+</div>
+
+<script>
+    function calculateShippingCost() {
+        const weight = parseFloat(document.getElementById('weight').value);
+        const city = document.getElementById('city').value;
+        let costPerLbs = 0;
+        const fixedFee = 10; // Frais fixe de 10$
+
+        if (!weight || weight <= 0) {
+            alert('Veuillez entrer un poids valide.');
+            return;
+        }
+
+        if (city === 'Les Cayes') {
+            costPerLbs = 6; // 6$ par lbs
+        } else if (city === 'Port-au-Prince') {
+            costPerLbs = 3.5; // 3.5$ par lbs
+        } else if (city === 'Cap-Haïtien') {
+            costPerLbs = 4; // 4$ par lbs
+        } else {
+            alert('Veuillez sélectionner une ville.');
+            return;
+        }
+
+        // Calcul du coût total
+        const totalCost = (costPerLbs * weight) + fixedFee;
+
+        // Affichage du résultat
+        const resultDiv = document.getElementById('result');
+        resultDiv.style.display = 'block';
+        resultDiv.textContent = `📦 Le coût d'expédition pour un colis de ${weight} lbs vers ${city} est de : $${totalCost.toFixed(2)} (incluant un frais fixe de $${fixedFee}).`;
+    }
+</script>
+</body>
+</html>
