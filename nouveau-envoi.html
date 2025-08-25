@@ -1,0 +1,468 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nouveau Colis - AyitiShop&Ship</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+            min-height: 100vh;
+            color: #1a202c;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 2rem 1rem;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
+        .back-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.75rem 1.5rem;
+            background: white;
+            color: #001b72;
+            text-decoration: none;
+            border-radius: 0.5rem;
+            font-weight: 500;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            transition: all 0.3s ease;
+            margin-bottom: 2rem;
+        }
+
+        .back-btn:hover {
+            background: #001b72;
+            color: white;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+        }
+
+        .page-title {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: #001b72;
+            margin-bottom: 1rem;
+        }
+
+        .page-subtitle {
+            font-size: 1.125rem;
+            color: #6b7280;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .form-container {
+            background: white;
+            border-radius: 1rem;
+            padding: 2rem;
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1);
+            border: 1px solid #f3f4f6;
+        }
+
+        .form-section {
+            margin-bottom: 2rem;
+        }
+
+        .section-title {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: #001b72;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 1rem;
+        }
+
+        @media (min-width: 768px) {
+            .form-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group.full-width {
+            grid-column: 1 / -1;
+        }
+
+        .form-group label {
+            display: block;
+            font-weight: 600;
+            color: #001b72;
+            margin-bottom: 0.5rem;
+        }
+
+        .required {
+            color: #ea002a;
+        }
+
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 0.75rem;
+            border: 2px solid #e5e7eb;
+            border-radius: 0.5rem;
+            font-size: 1rem;
+            transition: border-color 0.3s ease;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: #ea002a;
+            box-shadow: 0 0 0 3px rgba(234, 0, 42, 0.1);
+        }
+
+        .form-group textarea {
+            resize: vertical;
+            min-height: 100px;
+        }
+
+        .price-display {
+            background: #f0f8ff;
+            border: 2px solid #001b72;
+            border-radius: 0.75rem;
+            padding: 1.5rem;
+            text-align: center;
+            margin: 1.5rem 0;
+        }
+
+        .price-label {
+            font-size: 0.875rem;
+            color: #6b7280;
+            margin-bottom: 0.5rem;
+        }
+
+        .price-amount {
+            font-size: 2rem;
+            font-weight: 700;
+            color: #ea002a;
+        }
+
+        .submit-btn {
+            width: 100%;
+            background: linear-gradient(135deg, #ea002a, #ff4757);
+            color: white;
+            border: none;
+            padding: 1rem 2rem;
+            border-radius: 0.75rem;
+            font-weight: 600;
+            font-size: 1.125rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+        }
+
+        .submit-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px -5px rgba(234, 0, 42, 0.3);
+        }
+
+        .submit-btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .info-box {
+            background: #fef2f2;
+            border: 1px solid #fecaca;
+            border-radius: 0.5rem;
+            padding: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .info-box h4 {
+            color: #ea002a;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+
+        .info-box ul {
+            color: #6b7280;
+            padding-left: 1.5rem;
+        }
+
+        .success-message {
+            background: #f0fdf4;
+            border: 1px solid #bbf7d0;
+            border-radius: 0.75rem;
+            padding: 2rem;
+            text-align: center;
+            display: none;
+        }
+
+        .success-icon {
+            font-size: 3rem;
+            color: #10b981;
+            margin-bottom: 1rem;
+        }
+
+        .tracking-number {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #001b72;
+            background: white;
+            padding: 1rem;
+            border-radius: 0.5rem;
+            margin: 1rem 0;
+            border: 2px dashed #10b981;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <a href="index.html" class="back-btn">
+                <i class="fas fa-arrow-left"></i>
+                Retour à l'accueil
+            </a>
+            <h1 class="page-title">Nouveau Colis</h1>
+            <p class="page-subtitle">
+                Remplissez les informations ci-dessous pour enregistrer votre nouveau colis
+            </p>
+        </div>
+
+        <div class="form-container">
+            <form id="newShipmentForm">
+                <!-- Informations Client -->
+                <div class="form-section">
+                    <h3 class="section-title">
+                        <i class="fas fa-user"></i>
+                        Informations Client
+                    </h3>
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label for="clientName">Nom complet <span class="required">*</span></label>
+                            <input type="text" id="clientName" name="clientName" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="clientPhone">Téléphone <span class="required">*</span></label>
+                            <input type="tel" id="clientPhone" name="clientPhone" required>
+                        </div>
+                        <div class="form-group full-width">
+                            <label for="clientEmail">Email</label>
+                            <input type="email" id="clientEmail" name="clientEmail">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Informations Colis -->
+                <div class="form-section">
+                    <h3 class="section-title">
+                        <i class="fas fa-box"></i>
+                        Informations Colis
+                    </h3>
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label for="packageDescription">Description du colis <span class="required">*</span></label>
+                            <input type="text" id="packageDescription" name="packageDescription" placeholder="Ex: Vêtements, Électronique..." required>
+                        </div>
+                        <div class="form-group">
+                            <label for="packageWeight">Poids (lbs) <span class="required">*</span></label>
+                            <input type="number" id="packageWeight" name="packageWeight" step="0.1" min="0.1" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="packageValue">Valeur déclarée ($)</label>
+                            <input type="number" id="packageValue" name="packageValue" step="0.01" min="0">
+                        </div>
+                        <div class="form-group">
+                            <label for="destination">Destination <span class="required">*</span></label>
+                            <select id="destination" name="destination" required>
+                                <option value="">Sélectionnez une ville</option>
+                                <option value="Port-au-Prince">Port-au-Prince</option>
+                                <option value="Cap-Haïtien">Cap-Haïtien</option>
+                                <option value="Les Cayes">Les Cayes</option>
+                            </select>
+                        </div>
+                        <div class="form-group full-width">
+                            <label for="specialInstructions">Instructions spéciales</label>
+                            <textarea id="specialInstructions" name="specialInstructions" placeholder="Toute information importante concernant votre colis..."></textarea>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Adresse de Livraison -->
+                <div class="form-section">
+                    <h3 class="section-title">
+                        <i class="fas fa-map-marker-alt"></i>
+                        Adresse de Livraison
+                    </h3>
+                    <div class="form-grid">
+                        <div class="form-group full-width">
+                            <label for="deliveryAddress">Adresse complète <span class="required">*</span></label>
+                            <textarea id="deliveryAddress" name="deliveryAddress" placeholder="Adresse complète de livraison en Haïti..." required></textarea>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Calcul du Prix -->
+                <div class="price-display" id="priceDisplay" style="display: none;">
+                    <div class="price-label">Coût estimé de l'expédition</div>
+                    <div class="price-amount" id="calculatedPrice">$0.00</div>
+                    <small style="color: #6b7280; margin-top: 0.5rem; display: block;">
+                        (Incluant les frais fixes de $10)
+                    </small>
+                </div>
+
+                <!-- Informations Importantes -->
+                <div class="info-box">
+                    <h4><i class="fas fa-info-circle"></i> Informations Importantes</h4>
+                    <ul>
+                        <li>Tous les champs marqués d'un * sont obligatoires</li>
+                        <li>Le poids doit être en livres (lbs)</li>
+                        <li>Un numéro de suivi vous sera fourni après l'enregistrement</li>
+                        <li>Vous recevrez une confirmation par email si fourni</li>
+                    </ul>
+                </div>
+
+                <button type="submit" class="submit-btn" id="submitBtn">
+                    <i class="fas fa-paper-plane"></i>
+                    Enregistrer le Colis
+                </button>
+            </form>
+
+            <!-- Message de Succès -->
+            <div class="success-message" id="successMessage">
+                <div class="success-icon">
+                    <i class="fas fa-check-circle"></i>
+                </div>
+                <h3 style="color: #10b981; margin-bottom: 1rem;">Colis Enregistré avec Succès!</h3>
+                <p style="color: #6b7280; margin-bottom: 1rem;">
+                    Votre colis a été enregistré dans notre système. Voici votre numéro de suivi :
+                </p>
+                <div class="tracking-number" id="generatedTrackingNumber">
+                    AYITI-000000
+                </div>
+                <p style="color: #6b7280; margin-bottom: 2rem;">
+                    Conservez précieusement ce numéro pour suivre votre colis.
+                </p>
+                <div style="display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;">
+                    <a href="suivi-ameliore.html" class="back-btn">
+                        <i class="fas fa-search"></i>
+                        Suivre ce Colis
+                    </a>
+                    <a href="index.html" class="back-btn">
+                        <i class="fas fa-home"></i>
+                        Retour à l'Accueil
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Calcul automatique du prix
+        function calculatePrice() {
+            const weight = parseFloat(document.getElementById('packageWeight').value) || 0;
+            const destination = document.getElementById('destination').value;
+            
+            if (weight > 0 && destination) {
+                let pricePerLb = 0;
+                const fixedFee = 10;
+                
+                switch(destination) {
+                    case 'Port-au-Prince':
+                        pricePerLb = 3.5;
+                        break;
+                    case 'Cap-Haïtien':
+                        pricePerLb = 4;
+                        break;
+                    case 'Les Cayes':
+                        pricePerLb = 6;
+                        break;
+                }
+                
+                const totalPrice = (weight * pricePerLb) + fixedFee;
+                document.getElementById('calculatedPrice').textContent = `$${totalPrice.toFixed(2)}`;
+                document.getElementById('priceDisplay').style.display = 'block';
+            } else {
+                document.getElementById('priceDisplay').style.display = 'none';
+            }
+        }
+
+        // Génération du numéro de suivi
+        function generateTrackingNumber() {
+            const timestamp = Date.now().toString().slice(-6);
+            const random = Math.floor(Math.random() * 1000).toString().padStart(3, '0');
+            return `AYITI-${timestamp}${random}`;
+        }
+
+        // Gestion du formulaire
+        document.getElementById('newShipmentForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const submitBtn = document.getElementById('submitBtn');
+            const originalText = submitBtn.innerHTML;
+            
+            // Animation de chargement
+            submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Enregistrement...';
+            submitBtn.disabled = true;
+            
+            // Simulation de l'enregistrement
+            setTimeout(() => {
+                const trackingNumber = generateTrackingNumber();
+                document.getElementById('generatedTrackingNumber').textContent = trackingNumber;
+                
+                // Masquer le formulaire et afficher le succès
+                document.getElementById('newShipmentForm').style.display = 'none';
+                document.getElementById('successMessage').style.display = 'block';
+                
+                // Sauvegarder dans localStorage pour le suivi
+                const packageData = {
+                    trackingNumber: trackingNumber,
+                    clientName: document.getElementById('clientName').value,
+                    destination: document.getElementById('destination').value,
+                    weight: document.getElementById('packageWeight').value,
+                    description: document.getElementById('packageDescription').value,
+                    status: 'registered',
+                    createdAt: new Date().toISOString()
+                };
+                
+                let packages = JSON.parse(localStorage.getItem('packages') || '[]');
+                packages.push(packageData);
+                localStorage.setItem('packages', JSON.stringify(packages));
+                
+                // Réinitialiser le bouton
+                submitBtn.innerHTML = originalText;
+                submitBtn.disabled = false;
+                
+            }, 2000);
+        });
+
+        // Écouteurs pour le calcul automatique
+        document.getElementById('packageWeight').addEventListener('input', calculatePrice);
+        document.getElementById('destination').addEventListener('change', calculatePrice);
+    </script>
+</body>
+</html>

@@ -1,0 +1,627 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Suivi de Colis - AyitiShop&Ship</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+            min-height: 100vh;
+            color: #1a202c;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 2rem 1rem;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
+        .back-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.75rem 1.5rem;
+            background: white;
+            color: #001b72;
+            text-decoration: none;
+            border-radius: 0.5rem;
+            font-weight: 500;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            transition: all 0.3s ease;
+            margin-bottom: 2rem;
+        }
+
+        .back-btn:hover {
+            background: #001b72;
+            color: white;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+        }
+
+        .page-title {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: #001b72;
+            margin-bottom: 1rem;
+        }
+
+        .page-subtitle {
+            font-size: 1.125rem;
+            color: #6b7280;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .search-container {
+            background: white;
+            border-radius: 1rem;
+            padding: 2rem;
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1);
+            border: 1px solid #f3f4f6;
+            margin-bottom: 2rem;
+        }
+
+        .search-form {
+            display: flex;
+            gap: 1rem;
+            align-items: end;
+        }
+
+        .search-group {
+            flex: 1;
+        }
+
+        .search-group label {
+            display: block;
+            font-weight: 600;
+            color: #001b72;
+            margin-bottom: 0.5rem;
+        }
+
+        .search-input {
+            width: 100%;
+            padding: 0.75rem;
+            border: 2px solid #e5e7eb;
+            border-radius: 0.5rem;
+            font-size: 1rem;
+            transition: border-color 0.3s ease;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        .search-input:focus {
+            outline: none;
+            border-color: #ea002a;
+            box-shadow: 0 0 0 3px rgba(234, 0, 42, 0.1);
+        }
+
+        .search-btn {
+            background: linear-gradient(135deg, #ea002a, #ff4757);
+            color: white;
+            border: none;
+            padding: 0.75rem 2rem;
+            border-radius: 0.5rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            white-space: nowrap;
+        }
+
+        .search-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px -5px rgba(234, 0, 42, 0.3);
+        }
+
+        @media (max-width: 768px) {
+            .search-form {
+                flex-direction: column;
+                align-items: stretch;
+            }
+        }
+
+        .tracking-result {
+            background: white;
+            border-radius: 1rem;
+            padding: 2rem;
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1);
+            border: 1px solid #f3f4f6;
+            display: none;
+        }
+
+        .package-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: start;
+            margin-bottom: 2rem;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .package-info h3 {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #001b72;
+            margin-bottom: 0.5rem;
+        }
+
+        .tracking-number {
+            font-size: 1.125rem;
+            color: #6b7280;
+            font-family: 'Courier New', monospace;
+        }
+
+        .status-badge {
+            padding: 0.5rem 1rem;
+            border-radius: 9999px;
+            font-weight: 600;
+            font-size: 0.875rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .status-registered {
+            background: #dbeafe;
+            color: #1e40af;
+        }
+
+        .status-transit {
+            background: #fef3c7;
+            color: #d97706;
+        }
+
+        .status-arrived {
+            background: #e0e7ff;
+            color: #5b21b6;
+        }
+
+        .status-delivery {
+            background: #fecaca;
+            color: #dc2626;
+        }
+
+        .status-delivered {
+            background: #dcfce7;
+            color: #16a34a;
+        }
+
+        .package-details {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin-bottom: 2rem;
+            padding: 1.5rem;
+            background: #f8fafc;
+            border-radius: 0.75rem;
+        }
+
+        .detail-item {
+            text-align: center;
+        }
+
+        .detail-label {
+            font-size: 0.875rem;
+            color: #6b7280;
+            margin-bottom: 0.25rem;
+        }
+
+        .detail-value {
+            font-weight: 600;
+            color: #001b72;
+        }
+
+        .timeline {
+            position: relative;
+            padding-left: 2rem;
+        }
+
+        .timeline::before {
+            content: '';
+            position: absolute;
+            left: 1rem;
+            top: 0;
+            bottom: 0;
+            width: 2px;
+            background: #e5e7eb;
+        }
+
+        .timeline-item {
+            position: relative;
+            margin-bottom: 2rem;
+            padding-left: 2rem;
+        }
+
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            left: -2rem;
+            top: 0.5rem;
+            width: 1rem;
+            height: 1rem;
+            border-radius: 50%;
+            border: 3px solid #e5e7eb;
+            background: white;
+            z-index: 1;
+        }
+
+        .timeline-item.active::before {
+            border-color: #ea002a;
+            background: #ea002a;
+        }
+
+        .timeline-item.completed::before {
+            border-color: #10b981;
+            background: #10b981;
+        }
+
+        .timeline-content {
+            background: white;
+            border: 2px solid #f3f4f6;
+            border-radius: 0.75rem;
+            padding: 1.5rem;
+            transition: all 0.3s ease;
+        }
+
+        .timeline-item.active .timeline-content {
+            border-color: #ea002a;
+            box-shadow: 0 4px 6px -1px rgba(234, 0, 42, 0.1);
+        }
+
+        .timeline-item.completed .timeline-content {
+            border-color: #10b981;
+            background: #f0fdf4;
+        }
+
+        .timeline-title {
+            font-weight: 600;
+            color: #001b72;
+            margin-bottom: 0.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .timeline-item.active .timeline-title {
+            color: #ea002a;
+        }
+
+        .timeline-item.completed .timeline-title {
+            color: #10b981;
+        }
+
+        .timeline-description {
+            color: #6b7280;
+            margin-bottom: 0.5rem;
+        }
+
+        .timeline-date {
+            font-size: 0.875rem;
+            color: #9ca3af;
+            font-weight: 500;
+        }
+
+        .timeline-item.active .timeline-date,
+        .timeline-item.completed .timeline-date {
+            color: #374151;
+        }
+
+        .no-result {
+            text-align: center;
+            padding: 3rem 2rem;
+            color: #6b7280;
+        }
+
+        .no-result-icon {
+            font-size: 4rem;
+            margin-bottom: 1rem;
+            opacity: 0.5;
+        }
+
+        .estimated-delivery {
+            background: linear-gradient(135deg, #eff6ff, #dbeafe);
+            border: 1px solid #93c5fd;
+            border-radius: 0.75rem;
+            padding: 1.5rem;
+            margin-top: 2rem;
+            text-align: center;
+        }
+
+        .estimated-delivery h4 {
+            color: #1e40af;
+            margin-bottom: 0.5rem;
+        }
+
+        .estimated-date {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: #001b72;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <a href="index.html" class="back-btn">
+                <i class="fas fa-arrow-left"></i>
+                Retour à l'accueil
+            </a>
+            <h1 class="page-title">Suivi de Colis</h1>
+            <p class="page-subtitle">
+                Entrez votre numéro de suivi pour connaître l'état de votre colis en temps réel
+            </p>
+        </div>
+
+        <div class="search-container">
+            <form class="search-form" id="trackingForm">
+                <div class="search-group">
+                    <label for="trackingNumber">Numéro de suivi</label>
+                    <input 
+                        type="text" 
+                        id="trackingNumber" 
+                        class="search-input"
+                        placeholder="Ex: AYITI-123456789"
+                        required
+                    >
+                </div>
+                <button type="submit" class="search-btn" id="searchBtn">
+                    <i class="fas fa-search"></i>
+                    Rechercher
+                </button>
+            </form>
+        </div>
+
+        <div class="tracking-result" id="trackingResult">
+            <!-- Contenu dynamique généré par JavaScript -->
+        </div>
+    </div>
+
+    <script>
+        // Données de démonstration pour le suivi
+        const trackingSteps = [
+            {
+                id: 'registered',
+                title: 'Colis Enregistré',
+                description: 'Votre colis a été enregistré dans notre système',
+                icon: 'fas fa-clipboard-check'
+            },
+            {
+                id: 'transit',
+                title: 'En Transit',
+                description: 'Votre colis est en route vers Haïti',
+                icon: 'fas fa-plane'
+            },
+            {
+                id: 'arrived',
+                title: 'Arrivé au Dépôt',
+                description: 'Votre colis est arrivé à notre dépôt en Haïti',
+                icon: 'fas fa-warehouse'
+            },
+            {
+                id: 'delivery',
+                title: 'En Cours de Livraison',
+                description: 'Votre colis est en cours de livraison',
+                icon: 'fas fa-truck'
+            },
+            {
+                id: 'delivered',
+                title: 'Livré',
+                description: 'Votre colis a été livré avec succès',
+                icon: 'fas fa-check-circle'
+            }
+        ];
+
+        function generateMockData(trackingNumber) {
+            // Générer des données de démonstration basées sur le numéro de suivi
+            const statuses = ['registered', 'transit', 'arrived', 'delivery', 'delivered'];
+            const currentStatusIndex = Math.floor(Math.random() * statuses.length);
+            const currentStatus = statuses[currentStatusIndex];
+            
+            const baseDate = new Date();
+            baseDate.setDate(baseDate.getDate() - 5);
+            
+            return {
+                trackingNumber: trackingNumber,
+                clientName: 'Jean Dupont',
+                destination: 'Port-au-Prince',
+                weight: '2.5 lbs',
+                description: 'Vêtements',
+                currentStatus: currentStatus,
+                estimatedDelivery: new Date(baseDate.getTime() + (7 * 24 * 60 * 60 * 1000)),
+                timeline: trackingSteps.map((step, index) => ({
+                    ...step,
+                    status: index < currentStatusIndex ? 'completed' : 
+                           index === currentStatusIndex ? 'active' : 'pending',
+                    date: index <= currentStatusIndex ? 
+                          new Date(baseDate.getTime() + (index * 24 * 60 * 60 * 1000)) : null
+                }))
+            };
+        }
+
+        function getStatusBadgeClass(status) {
+            const statusClasses = {
+                'registered': 'status-registered',
+                'transit': 'status-transit',
+                'arrived': 'status-arrived',
+                'delivery': 'status-delivery',
+                'delivered': 'status-delivered'
+            };
+            return statusClasses[status] || 'status-registered';
+        }
+
+        function getStatusText(status) {
+            const statusTexts = {
+                'registered': 'Enregistré',
+                'transit': 'En Transit',
+                'arrived': 'Au Dépôt',
+                'delivery': 'En Livraison',
+                'delivered': 'Livré'
+            };
+            return statusTexts[status] || 'Inconnu';
+        }
+
+        function formatDate(date) {
+            return date.toLocaleDateString('fr-FR', {
+                day: 'numeric',
+                month: 'long',
+                year: 'numeric',
+                hour: '2-digit',
+                minute: '2-digit'
+            });
+        }
+
+        function displayTrackingResult(data) {
+            const resultContainer = document.getElementById('trackingResult');
+            
+            const html = `
+                <div class="package-header">
+                    <div class="package-info">
+                        <h3>Colis de ${data.clientName}</h3>
+                        <div class="tracking-number">${data.trackingNumber}</div>
+                    </div>
+                    <div class="status-badge ${getStatusBadgeClass(data.currentStatus)}">
+                        ${getStatusText(data.currentStatus)}
+                    </div>
+                </div>
+
+                <div class="package-details">
+                    <div class="detail-item">
+                        <div class="detail-label">Destination</div>
+                        <div class="detail-value">${data.destination}</div>
+                    </div>
+                    <div class="detail-item">
+                        <div class="detail-label">Poids</div>
+                        <div class="detail-value">${data.weight}</div>
+                    </div>
+                    <div class="detail-item">
+                        <div class="detail-label">Description</div>
+                        <div class="detail-value">${data.description}</div>
+                    </div>
+                </div>
+
+                <div class="timeline">
+                    ${data.timeline.map(step => `
+                        <div class="timeline-item ${step.status}">
+                            <div class="timeline-content">
+                                <div class="timeline-title">
+                                    <i class="${step.icon}"></i>
+                                    ${step.title}
+                                </div>
+                                <div class="timeline-description">${step.description}</div>
+                                ${step.date ? `<div class="timeline-date">${formatDate(step.date)}</div>` : ''}
+                            </div>
+                        </div>
+                    `).join('')}
+                </div>
+
+                ${data.currentStatus !== 'delivered' ? `
+                    <div class="estimated-delivery">
+                        <h4><i class="fas fa-calendar-alt"></i> Livraison Estimée</h4>
+                        <div class="estimated-date">${formatDate(data.estimatedDelivery)}</div>
+                    </div>
+                ` : ''}
+            `;
+            
+            resultContainer.innerHTML = html;
+            resultContainer.style.display = 'block';
+        }
+
+        function displayNoResult() {
+            const resultContainer = document.getElementById('trackingResult');
+            
+            const html = `
+                <div class="no-result">
+                    <div class="no-result-icon">
+                        <i class="fas fa-search"></i>
+                    </div>
+                    <h3 style="color: #374151; margin-bottom: 1rem;">Aucun Colis Trouvé</h3>
+                    <p>Le numéro de suivi que vous avez saisi n'existe pas dans notre système.</p>
+                    <p style="margin-top: 0.5rem;">Vérifiez le numéro et réessayez.</p>
+                </div>
+            `;
+            
+            resultContainer.innerHTML = html;
+            resultContainer.style.display = 'block';
+        }
+
+        // Gestion du formulaire de recherche
+        document.getElementById('trackingForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const trackingNumber = document.getElementById('trackingNumber').value.trim();
+            const searchBtn = document.getElementById('searchBtn');
+            const originalText = searchBtn.innerHTML;
+            
+            if (!trackingNumber) {
+                alert('Veuillez entrer un numéro de suivi');
+                return;
+            }
+            
+            // Animation de chargement
+            searchBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Recherche...';
+            searchBtn.disabled = true;
+            
+            // Simulation de recherche
+            setTimeout(() => {
+                // Vérifier d'abord dans localStorage
+                const packages = JSON.parse(localStorage.getItem('packages') || '[]');
+                const foundPackage = packages.find(pkg => pkg.trackingNumber === trackingNumber);
+                
+                if (foundPackage) {
+                    // Utiliser les données réelles du localStorage
+                    const mockData = {
+                        trackingNumber: foundPackage.trackingNumber,
+                        clientName: foundPackage.clientName,
+                        destination: foundPackage.destination,
+                        weight: foundPackage.weight + ' lbs',
+                        description: foundPackage.description,
+                        currentStatus: foundPackage.status || 'registered',
+                        estimatedDelivery: new Date(Date.now() + (7 * 24 * 60 * 60 * 1000)),
+                        timeline: trackingSteps.map((step, index) => ({
+                            ...step,
+                            status: index === 0 ? 'completed' : index === 1 ? 'active' : 'pending',
+                            date: index === 0 ? new Date(foundPackage.createdAt) : 
+                                  index === 1 ? new Date() : null
+                        }))
+                    };
+                    displayTrackingResult(mockData);
+                } else if (trackingNumber.toUpperCase().startsWith('AYITI')) {
+                    // Générer des données de démonstration
+                    const mockData = generateMockData(trackingNumber);
+                    displayTrackingResult(mockData);
+                } else {
+                    displayNoResult();
+                }
+                
+                // Réinitialiser le bouton
+                searchBtn.innerHTML = originalText;
+                searchBtn.disabled = false;
+                
+            }, 1500);
+        });
+
+        // Pré-remplir si un numéro de suivi est passé en paramètre URL
+        const urlParams = new URLSearchParams(window.location.search);
+        const trackingParam = urlParams.get('tracking');
+        if (trackingParam) {
+            document.getElementById('trackingNumber').value = trackingParam;
+            document.getElementById('trackingForm').dispatchEvent(new Event('submit'));
+        }
+    </script>
+</body>
+</html>
