@@ -1,0 +1,777 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Scanner de Colis - AyitiShop&Ship Admin</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+            min-height: 100vh;
+            color: #1a202c;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 2rem 1rem;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
+        .page-title {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: #001b72;
+            margin-bottom: 1rem;
+        }
+
+        .scanner-container {
+            background: white;
+            border-radius: 1rem;
+            padding: 2rem;
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1);
+            border: 1px solid #f3f4f6;
+            margin-bottom: 2rem;
+        }
+
+        .scanner-section {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .camera-container {
+            position: relative;
+            max-width: 400px;
+            margin: 0 auto 2rem;
+            border-radius: 1rem;
+            overflow: hidden;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+        }
+
+        #video {
+            width: 100%;
+            height: auto;
+            display: block;
+        }
+
+        .scanner-overlay {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 200px;
+            height: 200px;
+            border: 2px solid #ea002a;
+            border-radius: 1rem;
+            background: rgba(234, 0, 42, 0.1);
+        }
+
+        .scanner-overlay::before,
+        .scanner-overlay::after {
+            content: '';
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            border: 3px solid #ea002a;
+        }
+
+        .scanner-overlay::before {
+            top: -3px;
+            left: -3px;
+            border-right: none;
+            border-bottom: none;
+        }
+
+        .scanner-overlay::after {
+            bottom: -3px;
+            right: -3px;
+            border-left: none;
+            border-top: none;
+        }
+
+        .scanner-controls {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            padding: 0.75rem 1.5rem;
+            border: none;
+            border-radius: 0.5rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .btn-primary {
+            background: #ea002a;
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: #d1001f;
+            transform: translateY(-2px);
+        }
+
+        .btn-secondary {
+            background: #6b7280;
+            color: white;
+        }
+
+        .btn-secondary:hover {
+            background: #4b5563;
+        }
+
+        .manual-input {
+            background: #f8fafc;
+            border-radius: 0.75rem;
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .input-group {
+            display: flex;
+            gap: 1rem;
+            align-items: end;
+        }
+
+        .input-group input {
+            flex: 1;
+            padding: 0.75rem;
+            border: 2px solid #e5e7eb;
+            border-radius: 0.5rem;
+            font-size: 1rem;
+        }
+
+        .input-group input:focus {
+            outline: none;
+            border-color: #ea002a;
+        }
+
+        .status-update {
+            background: white;
+            border-radius: 0.75rem;
+            padding: 1.5rem;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            display: none;
+        }
+
+        .colis-info {
+            background: #f0f8ff;
+            border: 1px solid #93c5fd;
+            border-radius: 0.5rem;
+            padding: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .colis-info h4 {
+            color: #1e40af;
+            margin-bottom: 0.5rem;
+        }
+
+        .status-options {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin: 1rem 0;
+        }
+
+        .status-option {
+            padding: 1rem;
+            border: 2px solid #e5e7eb;
+            border-radius: 0.5rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-align: center;
+        }
+
+        .status-option:hover {
+            border-color: #ea002a;
+            background: #fef2f2;
+        }
+
+        .status-option.selected {
+            border-color: #ea002a;
+            background: #fef2f2;
+            color: #ea002a;
+        }
+
+        .form-group {
+            margin-bottom: 1rem;
+        }
+
+        .form-group label {
+            display: block;
+            font-weight: 600;
+            color: #001b72;
+            margin-bottom: 0.5rem;
+        }
+
+        .form-group input,
+        .form-group textarea {
+            width: 100%;
+            padding: 0.75rem;
+            border: 2px solid #e5e7eb;
+            border-radius: 0.5rem;
+            font-size: 1rem;
+        }
+
+        .form-group textarea {
+            resize: vertical;
+            min-height: 80px;
+        }
+
+        .success-message {
+            background: #f0fdf4;
+            border: 1px solid #bbf7d0;
+            color: #16a34a;
+            padding: 1rem;
+            border-radius: 0.5rem;
+            margin: 1rem 0;
+            display: none;
+        }
+
+        .error-message {
+            background: #fef2f2;
+            border: 1px solid #fecaca;
+            color: #dc2626;
+            padding: 1rem;
+            border-radius: 0.5rem;
+            margin: 1rem 0;
+            display: none;
+        }
+
+        .recent-scans {
+            background: white;
+            border-radius: 1rem;
+            padding: 2rem;
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1);
+        }
+
+        .scan-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem;
+            border-bottom: 1px solid #e5e7eb;
+        }
+
+        .scan-item:last-child {
+            border-bottom: none;
+        }
+
+        .scan-info {
+            flex: 1;
+        }
+
+        .scan-tracking {
+            font-weight: 600;
+            color: #001b72;
+            font-family: 'Courier New', monospace;
+        }
+
+        .scan-status {
+            font-size: 0.875rem;
+            color: #6b7280;
+        }
+
+        .scan-time {
+            font-size: 0.875rem;
+            color: #9ca3af;
+        }
+
+        @media (max-width: 768px) {
+            .input-group {
+                flex-direction: column;
+            }
+
+            .scanner-controls {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1 class="page-title">Scanner de Colis</h1>
+            <p style="color: #6b7280;">Interface agent pour scanner et mettre à jour le statut des colis</p>
+        </div>
+
+        <!-- Section Scanner -->
+        <div class="scanner-container">
+            <div class="scanner-section">
+                <h3 style="color: #001b72; margin-bottom: 1rem;">
+                    <i class="fas fa-qrcode"></i>
+                    Scanner QR Code
+                </h3>
+                
+                <div class="camera-container" id="cameraContainer" style="display: none;">
+                    <video id="video" autoplay></video>
+                    <div class="scanner-overlay"></div>
+                </div>
+
+                <div class="scanner-controls">
+                    <button class="btn btn-primary" id="startScanBtn">
+                        <i class="fas fa-camera"></i>
+                        Démarrer le Scanner
+                    </button>
+                    <button class="btn btn-secondary" id="stopScanBtn" style="display: none;">
+                        <i class="fas fa-stop"></i>
+                        Arrêter le Scanner
+                    </button>
+                </div>
+            </div>
+
+            <!-- Saisie manuelle -->
+            <div class="manual-input">
+                <h4 style="color: #001b72; margin-bottom: 1rem;">
+                    <i class="fas fa-keyboard"></i>
+                    Saisie Manuelle
+                </h4>
+                <div class="input-group">
+                    <input type="text" id="manualInput" placeholder="Entrez le numéro de suivi ou scannez le QR code">
+                    <button class="btn btn-primary" id="searchBtn">
+                        <i class="fas fa-search"></i>
+                        Rechercher
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Messages -->
+        <div class="success-message" id="successMessage"></div>
+        <div class="error-message" id="errorMessage"></div>
+
+        <!-- Section Mise à jour du statut -->
+        <div class="status-update" id="statusUpdate">
+            <h3 style="color: #001b72; margin-bottom: 1rem;">
+                <i class="fas fa-edit"></i>
+                Mettre à jour le Statut
+            </h3>
+
+            <div class="colis-info" id="colisInfo">
+                <!-- Informations du colis seront affichées ici -->
+            </div>
+
+            <div class="status-options" id="statusOptions">
+                <div class="status-option" data-status="en_transit">
+                    <i class="fas fa-plane" style="font-size: 1.5rem; margin-bottom: 0.5rem; display: block;"></i>
+                    <strong>En Transit</strong>
+                    <p style="font-size: 0.875rem; margin-top: 0.25rem;">Colis expédié vers Haïti</p>
+                </div>
+                <div class="status-option" data-status="arrive_bureau">
+                    <i class="fas fa-warehouse" style="font-size: 1.5rem; margin-bottom: 0.5rem; display: block;"></i>
+                    <strong>Arrivé au Bureau</strong>
+                    <p style="font-size: 0.875rem; margin-top: 0.25rem;">Colis arrivé en Haïti</p>
+                </div>
+                <div class="status-option" data-status="pret_recuperation">
+                    <i class="fas fa-bell" style="font-size: 1.5rem; margin-bottom: 0.5rem; display: block;"></i>
+                    <strong>Prêt à Récupérer</strong>
+                    <p style="font-size: 0.875rem; margin-top: 0.25rem;">Notifier le destinataire</p>
+                </div>
+                <div class="status-option" data-status="recupere">
+                    <i class="fas fa-check-circle" style="font-size: 1.5rem; margin-bottom: 0.5rem; display: block;"></i>
+                    <strong>Récupéré</strong>
+                    <p style="font-size: 0.875rem; margin-top: 0.25rem;">Colis remis au destinataire</p>
+                </div>
+                <div class="status-option" data-status="probleme">
+                    <i class="fas fa-exclamation-triangle" style="font-size: 1.5rem; margin-bottom: 0.5rem; display: block;"></i>
+                    <strong>Problème</strong>
+                    <p style="font-size: 0.875rem; margin-top: 0.25rem;">Signaler un problème</p>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="localisation">Localisation</label>
+                <input type="text" id="localisation" placeholder="Ex: Aéroport Port-au-Prince">
+            </div>
+
+            <div class="form-group">
+                <label for="commentaire">Commentaire</label>
+                <textarea id="commentaire" placeholder="Détails supplémentaires..."></textarea>
+            </div>
+
+            <button class="btn btn-primary" id="updateStatusBtn" style="width: 100%;">
+                <i class="fas fa-save"></i>
+                Mettre à Jour le Statut
+            </button>
+        </div>
+
+        <!-- Scans récents -->
+        <div class="recent-scans">
+            <h3 style="color: #001b72; margin-bottom: 1rem;">
+                <i class="fas fa-history"></i>
+                Scans Récents
+            </h3>
+            <div id="recentScans">
+                <!-- Les scans récents seront affichés ici -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Inclure la bibliothèque QR Scanner -->
+    <script src="https://unpkg.com/html5-qrcode@2.3.8/html5-qrcode.min.js"></script>
+    
+    <script>
+        // Variables globales
+        let html5QrCode = null;
+        let currentColis = null;
+        let selectedStatus = null;
+
+        // Initialisation
+        document.addEventListener('DOMContentLoaded', function() {
+            initializeScanner();
+            initializeStatusOptions();
+            initializeEventListeners();
+            loadRecentScans();
+        });
+
+        // Initialisation du scanner
+        function initializeScanner() {
+            const startBtn = document.getElementById('startScanBtn');
+            const stopBtn = document.getElementById('stopScanBtn');
+            const cameraContainer = document.getElementById('cameraContainer');
+
+            startBtn.addEventListener('click', startScanning);
+            stopBtn.addEventListener('click', stopScanning);
+        }
+
+        function startScanning() {
+            const cameraContainer = document.getElementById('cameraContainer');
+            const startBtn = document.getElementById('startScanBtn');
+            const stopBtn = document.getElementById('stopScanBtn');
+
+            html5QrCode = new Html5Qrcode("video");
+            
+            Html5Qrcode.getCameras().then(devices => {
+                if (devices && devices.length) {
+                    const cameraId = devices[0].id;
+                    
+                    html5QrCode.start(
+                        cameraId,
+                        {
+                            fps: 10,
+                            qrbox: { width: 200, height: 200 }
+                        },
+                        (decodedText, decodedResult) => {
+                            // QR Code détecté
+                            handleQRCodeDetected(decodedText);
+                            stopScanning();
+                        },
+                        (errorMessage) => {
+                            // Erreur de scan (normal, continue à scanner)
+                        }
+                    ).then(() => {
+                        cameraContainer.style.display = 'block';
+                        startBtn.style.display = 'none';
+                        stopBtn.style.display = 'inline-flex';
+                    }).catch(err => {
+                        showError('Erreur lors du démarrage de la caméra: ' + err);
+                    });
+                }
+            }).catch(err => {
+                showError('Aucune caméra trouvée: ' + err);
+            });
+        }
+
+        function stopScanning() {
+            if (html5QrCode) {
+                html5QrCode.stop().then(() => {
+                    const cameraContainer = document.getElementById('cameraContainer');
+                    const startBtn = document.getElementById('startScanBtn');
+                    const stopBtn = document.getElementById('stopScanBtn');
+                    
+                    cameraContainer.style.display = 'none';
+                    startBtn.style.display = 'inline-flex';
+                    stopBtn.style.display = 'none';
+                }).catch(err => {
+                    console.error('Erreur lors de l\'arrêt du scanner:', err);
+                });
+            }
+        }
+
+        // Gestion de la détection QR Code
+        function handleQRCodeDetected(qrData) {
+            // Extraire le numéro de suivi du QR code
+            const trackingNumber = extractTrackingFromQR(qrData);
+            if (trackingNumber) {
+                document.getElementById('manualInput').value = trackingNumber;
+                searchColis(trackingNumber);
+            } else {
+                showError('QR Code invalide');
+            }
+        }
+
+        function extractTrackingFromQR(qrData) {
+            // Le QR code peut contenir différents formats
+            // Chercher un pattern AYITI-XXXXXX
+            const match = qrData.match(/AYITI-\d{6}-\d{4}/);
+            return match ? match[0] : qrData;
+        }
+
+        // Initialisation des options de statut
+        function initializeStatusOptions() {
+            const statusOptions = document.querySelectorAll('.status-option');
+            statusOptions.forEach(option => {
+                option.addEventListener('click', () => {
+                    statusOptions.forEach(opt => opt.classList.remove('selected'));
+                    option.classList.add('selected');
+                    selectedStatus = option.dataset.status;
+                });
+            });
+        }
+
+        // Initialisation des event listeners
+        function initializeEventListeners() {
+            document.getElementById('searchBtn').addEventListener('click', () => {
+                const trackingNumber = document.getElementById('manualInput').value.trim();
+                if (trackingNumber) {
+                    searchColis(trackingNumber);
+                }
+            });
+
+            document.getElementById('manualInput').addEventListener('keypress', (e) => {
+                if (e.key === 'Enter') {
+                    const trackingNumber = e.target.value.trim();
+                    if (trackingNumber) {
+                        searchColis(trackingNumber);
+                    }
+                }
+            });
+
+            document.getElementById('updateStatusBtn').addEventListener('click', updateColisStatus);
+        }
+
+        // Recherche d'un colis
+        async function searchColis(trackingNumber) {
+            try {
+                showLoading();
+                
+                // Simuler un appel API (remplacer par le vrai appel)
+                const response = await simulateColisSearch(trackingNumber);
+                
+                if (response.success) {
+                    currentColis = response.data;
+                    displayColisInfo(currentColis);
+                    document.getElementById('statusUpdate').style.display = 'block';
+                } else {
+                    throw new Error(response.error);
+                }
+            } catch (error) {
+                showError(error.message);
+            } finally {
+                hideLoading();
+            }
+        }
+
+        // Simulation de recherche de colis
+        async function simulateColisSearch(trackingNumber) {
+            await new Promise(resolve => setTimeout(resolve, 1000));
+            
+            if (trackingNumber.startsWith('AYITI-')) {
+                return {
+                    success: true,
+                    data: {
+                        numero_suivi: trackingNumber,
+                        statut: 'en_transit',
+                        expediteur: {
+                            nom: 'Jean Dupont',
+                            telephone: '+1-555-123-4567'
+                        },
+                        destinataire: {
+                            nom: 'Marie Joseph',
+                            telephone: '+509-1234-5678',
+                            ville: 'Port-au-Prince'
+                        },
+                        colis: {
+                            type: 'vetements',
+                            poids: '2.5 lbs',
+                            description: 'Vêtements pour enfants'
+                        }
+                    }
+                };
+            } else {
+                return {
+                    success: false,
+                    error: 'Colis non trouvé'
+                };
+            }
+        }
+
+        // Affichage des informations du colis
+        function displayColisInfo(colis) {
+            const colisInfo = document.getElementById('colisInfo');
+            colisInfo.innerHTML = `
+                <h4><i class="fas fa-box"></i> ${colis.numero_suivi}</h4>
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem; margin-top: 1rem;">
+                    <div>
+                        <strong>Expéditeur:</strong><br>
+                        ${colis.expediteur.nom}<br>
+                        ${colis.expediteur.telephone}
+                    </div>
+                    <div>
+                        <strong>Destinataire:</strong><br>
+                        ${colis.destinataire.nom}<br>
+                        ${colis.destinataire.telephone}<br>
+                        ${colis.destinataire.ville}
+                    </div>
+                    <div>
+                        <strong>Colis:</strong><br>
+                        ${colis.colis.type} - ${colis.colis.poids}<br>
+                        ${colis.colis.description}
+                    </div>
+                    <div>
+                        <strong>Statut actuel:</strong><br>
+                        <span style="color: #ea002a; font-weight: 600;">${getStatusText(colis.statut)}</span>
+                    </div>
+                </div>
+            `;
+        }
+
+        // Mise à jour du statut du colis
+        async function updateColisStatus() {
+            if (!currentColis || !selectedStatus) {
+                showError('Veuillez sélectionner un nouveau statut');
+                return;
+            }
+
+            const localisation = document.getElementById('localisation').value;
+            const commentaire = document.getElementById('commentaire').value;
+
+            try {
+                showLoading();
+                
+                // Simuler l'appel API de mise à jour
+                const response = await simulateStatusUpdate(
+                    currentColis.numero_suivi,
+                    selectedStatus,
+                    localisation,
+                    commentaire
+                );
+                
+                if (response.success) {
+                    showSuccess('Statut mis à jour avec succès');
+                    addToRecentScans(currentColis.numero_suivi, selectedStatus);
+                    
+                    // Réinitialiser le formulaire
+                    resetForm();
+                } else {
+                    throw new Error(response.error);
+                }
+            } catch (error) {
+                showError(error.message);
+            } finally {
+                hideLoading();
+            }
+        }
+
+        // Simulation de mise à jour de statut
+        async function simulateStatusUpdate(trackingNumber, newStatus, localisation, commentaire) {
+            await new Promise(resolve => setTimeout(resolve, 1500));
+            
+            return {
+                success: true,
+                message: 'Statut mis à jour'
+            };
+        }
+
+        // Fonctions utilitaires
+        function getStatusText(status) {
+            const statusTexts = {
+                'en_attente': 'En Attente',
+                'en_transit': 'En Transit',
+                'arrive_bureau': 'Arrivé au Bureau',
+                'pret_recuperation': 'Prêt à Récupérer',
+                'recupere': 'Récupéré',
+                'probleme': 'Problème'
+            };
+            return statusTexts[status] || status;
+        }
+
+        function resetForm() {
+            document.getElementById('manualInput').value = '';
+            document.getElementById('localisation').value = '';
+            document.getElementById('commentaire').value = '';
+            document.getElementById('statusUpdate').style.display = 'none';
+            
+            document.querySelectorAll('.status-option').forEach(opt => {
+                opt.classList.remove('selected');
+            });
+            
+            currentColis = null;
+            selectedStatus = null;
+        }
+
+        function addToRecentScans(trackingNumber, status) {
+            const recentScans = document.getElementById('recentScans');
+            const scanItem = document.createElement('div');
+            scanItem.className = 'scan-item';
+            scanItem.innerHTML = `
+                <div class="scan-info">
+                    <div class="scan-tracking">${trackingNumber}</div>
+                    <div class="scan-status">Mis à jour: ${getStatusText(status)}</div>
+                </div>
+                <div class="scan-time">${new Date().toLocaleTimeString()}</div>
+            `;
+            
+            recentScans.insertBefore(scanItem, recentScans.firstChild);
+            
+            // Garder seulement les 10 derniers scans
+            while (recentScans.children.length > 10) {
+                recentScans.removeChild(recentScans.lastChild);
+            }
+        }
+
+        function loadRecentScans() {
+            // Charger les scans récents depuis le localStorage ou l'API
+            const recentScans = document.getElementById('recentScans');
+            recentScans.innerHTML = '<p style="color: #6b7280; text-align: center;">Aucun scan récent</p>';
+        }
+
+        function showLoading() {
+            // Implémenter l'affichage de chargement
+        }
+
+        function hideLoading() {
+            // Masquer le chargement
+        }
+
+        function showSuccess(message) {
+            const successMessage = document.getElementById('successMessage');
+            successMessage.textContent = message;
+            successMessage.style.display = 'block';
+            setTimeout(() => {
+                successMessage.style.display = 'none';
+            }, 5000);
+        }
+
+        function showError(message) {
+            const errorMessage = document.getElementById('errorMessage');
+            errorMessage.textContent = message;
+            errorMessage.style.display = 'block';
+            setTimeout(() => {
+                errorMessage.style.display = 'none';
+            }, 5000);
+        }
+    </script>
+</body>
+</html>
