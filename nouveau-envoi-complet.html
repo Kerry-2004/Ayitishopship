@@ -6,6 +6,7 @@
     <title>Enregistrement de Colis - AyitiShop&Ship</title>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/qrcode/build/qrcode.min.js"></script>
     <style>
         * {
             margin: 0;
@@ -591,7 +592,7 @@
     </div>
 
     <!-- Inclure la bibliothèque QR Code -->
-    <script src="https://cdn.jsdelivr.net/npm/qrcode@1.5.3/build/qrcode.min.js"></script>
+   <!-- <script src="https://cdn.jsdelivr.net/npm/qrcode/build/qrcode.min.js"></script>-->
     
     <script>
         // Variables globales
@@ -802,22 +803,35 @@
         }
 
         // Génération du QR Code
-        function generateQRCode(trackingNumber, qrCodeData) {
-            const qrCodeDisplay = document.getElementById('qrCodeDisplay');
-            qrCodeDisplay.innerHTML = '';
-            
-            QRCode.toCanvas(qrCodeDisplay, qrCodeData, {
-                width: 200,
-                height: 200,
-                colorDark: '#001b72',
-                colorLight: '#ffffff'
-            }, function (error) {
-                if (error) {
-                    console.error('Erreur génération QR Code:', error);
-                    qrCodeDisplay.innerHTML = '<p>Erreur lors de la génération du QR Code</p>';
-                }
-            });
+       function generateQRCode(trackingNumber) {
+    const qrCodeDisplay = document.getElementById('qrCodeDisplay');
+    qrCodeDisplay.innerHTML = ''; // vide la div avant de générer un nouveau QR
+
+    if (!trackingNumber) {
+        qrCodeDisplay.innerHTML = '<p>Numéro de suivi invalide</p>';
+        return;
+    }
+
+    // Crée un canvas pour le QR
+    const canvas = document.createElement('canvas');
+    qrCodeDisplay.appendChild(canvas);
+
+    // Génération du QR code
+    QRCode.toCanvas(canvas, trackingNumber, {
+        width: 200,
+        color: {
+            dark: '#001b72',
+            light: '#ffffff'
+        },
+        errorCorrectionLevel: 'H'
+    }, function (error) {
+        if (error) {
+            console.error('Erreur génération QR Code:', error);
+            qrCodeDisplay.innerHTML = '<p>Erreur lors de la génération du QR Code</p>';
         }
+    });
+}
+
 
         // Impression du QR Code
         function imprimerQR() {

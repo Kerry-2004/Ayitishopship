@@ -157,7 +157,7 @@ CREATE TABLE IF NOT EXISTS notifications (
 
 -- Insertion d'agents de test
 INSERT INTO agents (nom_complet, email, telephone, role) VALUES
-('Jean Baptiste', 'jean.baptiste@ayitishopship.com', '+1-508-246-3522', 'admin'),
+('Kerry Cherestal', 'kerrycherestal@gmail.com', '+509-4157-0822', 'admin'),
 ('Marie Dupont', 'marie.dupont@ayitishopship.com', '+1-508-246-3523', 'agent_usa'),
 ('Pierre Joseph', 'pierre.joseph@ayitishopship.com', '+509-1234-5678', 'agent_haiti');
 
