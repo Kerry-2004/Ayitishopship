@@ -1,10 +1,10 @@
-<?
+<?php
 header('Content-Type: application/json');
 header('Access-Control-Allow-Origin: *');
 header('Access-Control-Allow-Methods: POST');
 header('Access-Control-Allow-Headers: Content-Type');
 
-require_once '../classes/ColisManager.';
+require_once './classes/ColisManager.php';
 
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
     http_response_code(405);
@@ -14,7 +14,7 @@ if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
 
 try {
     // Récupérer les données JSON
-    $input = json_decode(file_get_contents('://input'), true);
+    $input = json_decode(file_get_contents(':php//input'), true);
     
     if (!$input) {
         throw new Exception('Données invalides');

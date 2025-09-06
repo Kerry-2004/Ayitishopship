@@ -26,6 +26,12 @@
             margin: 0 auto;
             padding: 2rem 1rem;
         }
+        
+        .logo img {
+            width: 6rem;
+            height: 4rem;
+            object-fit: contain;
+        }
 
         .header {
             text-align: center;
@@ -374,6 +380,9 @@
                 <i class="fas fa-arrow-left"></i>
                 Retour à l'accueil
             </a>
+             <div class="logo">
+                <img src="public/LOGO.png" alt="AyitiShop&Ship Logo" id="logo">
+            </div>
             <h1 class="page-title">Enregistrement de Colis</h1>
             <p class="page-subtitle">
                 Système complet d'enregistrement et de suivi des colis AyitiShop&Ship
@@ -381,7 +390,7 @@
         </div>
 
         <div class="form-container">
-            <form id="colisForm" enctype="multipart/form-data">
+            <form id="colisForm" enctype="multipart/form-data" action="./Savecolis.php" method="post">
                 <div class="form-sections">
                     <!-- Section Expéditeur -->
                     <div class="form-section">
@@ -592,8 +601,7 @@
     </div>
 
     <!-- Inclure la bibliothèque QR Code -->
-   <!-- <script src="https://cdn.jsdelivr.net/npm/qrcode/build/qrcode.min.js"></script>-->
-    
+   
     <script>
         // Variables globales
         let selectedPhotos = [];
@@ -731,7 +739,11 @@
 
             try {
                 // Simuler l'appel API (remplacer par l'appel réel)
-                const response = await simulateAPICall(formData);
+                const response = await fetch("Savecolis.php", {
+                method: "POST",
+                body: formData
+            }).then(res => res.json());
+
                 
                 if (response.success) {
                     currentTrackingNumber = response.data.numero_suivi;
@@ -748,14 +760,14 @@
         }
 
         // Simulation d'appel API (à remplacer par le vrai appel)
-        async function simulateAPICall(formData) {
+        async function sendColis(formData) {
             // Simulation d'un délai réseau
             await new Promise(resolve => setTimeout(resolve, 2000));
             
             // Générer des données de test
             const timestamp = Date.now().toString().slice(-6);
             const random = Math.floor(Math.random() * 1000).toString().padStart(3, '0');
-            const numeroSuivi = `AYITI-${timestamp}${random}`;
+            const numeroSuivi = `ASH-${timestamp}${random}`;
             const qrCode = `QR-${numeroSuivi}-${Date.now()}`;
             
             const poids = parseFloat(formData.get('colis[poids_lbs]')) || 0;
@@ -835,49 +847,132 @@
 
         // Impression du QR Code
         function imprimerQR() {
-            const printWindow = window.open('', '_blank');
-            const qrCanvas = document.querySelector('#qrCodeDisplay canvas');
-            
-            if (qrCanvas) {
-                const qrDataURL = qrCanvas.toDataURL();
-                printWindow.document.write(`
-                    <html>
-                        <head>
-                            <title>QR Code - ${currentTrackingNumber}</title>
-                            <style>
-                                body { 
-                                    font-family: Arial, sans-serif; 
-                                    text-align: center; 
-                                    padding: 20px; 
-                                }
-                                .qr-container {
-                                    border: 2px solid #001b72;
-                                    padding: 20px;
-                                    display: inline-block;
-                                    margin: 20px;
-                                }
-                                .tracking-number {
-                                    font-size: 18px;
-                                    font-weight: bold;
-                                    margin: 10px 0;
-                                    color: #001b72;
-                                }
-                            </style>
-                        </head>
-                        <body>
-                            <h1>AyitiShop&Ship</h1>
-                            <div class="qr-container">
-                                <img src="${qrDataURL}" alt="QR Code">
-                                <div class="tracking-number">${currentTrackingNumber}</div>
-                            </div>
-                            <p>Collez ce QR Code sur votre colis</p>
-                        </body>
-                    </html>
-                `);
-                printWindow.document.close();
-                printWindow.print();
-            }
-        }
+    const printWindow = window.open('', '_blank');
+    const qrCanvas = document.querySelector('#qrCodeDisplay canvas');
+
+      // Récupérer les valeurs du formulaire
+    const data = {
+          destinataire: document.getElementById('destinataire_nom').value,
+          ville: document.getElementById('ville_recuperation').value,
+          poids: document.getElementById('poids_lbs').value,
+          description: document.getElementById('description').value,
+          logo: document.getElementById('logo').value
+      };
+
+    if (qrCanvas) {
+        const qrDataURL = qrCanvas.toDataURL();
+
+        printWindow.document.write(`
+            <html>
+                <head>
+                    <title>QR Code - ${currentTrackingNumber}</title>
+                    <style>
+                      @page { size: 10cm 15cm; margin: 0; }
+                      body { font-family: Arial, sans-serif; text-align: center; padding: 10px; }
+                      .label {
+  width: 9cm;
+  height: auto;
+  border: 2px solid black;
+  font-family: Arial, sans-serif;
+  text-align: center;
+  box-sizing: border-box;
+}
+
+.section2 {
+   border-right: 1px solid black;
+   padding: 10px;
+}
+
+.section2:last-child {
+  border-bottom: none; /* Pas de ligne après la dernière partie */
+}
+
+
+.section {
+  padding: 10px;
+  border-bottom: 1px solid black; /* Séparation */
+}
+
+.section:last-child {
+  border-bottom: none; /* Pas de ligne après la dernière partie */
+}
+
+.top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.brand h2 {
+  margin: 0;
+  font-size: 18px;
+}
+
+.middle {
+  font-size: 14px;
+  text-align: left;
+}
+
+.tracking {
+  margin-top: 10px;
+  font-size: 16px;
+  font-weight: bold;
+  text-align: center;
+}
+
+.bottom {
+  font-size: 12px;
+  text-align: center;
+}
+
+.logo img {
+    width: 6rem;
+    height: 4rem;
+    object-fit: contain;
+}
+                    </style>
+                </head>
+                <body>
+                <div class="label">
+  <!-- Haut -->
+  <div class="top section">
+     <div class="section2">
+    <div class="qr">
+      <img src="${qrDataURL}" alt="QR Code" width="120">
+    </div>
+        </div>
+    <div class="brand">
+       <div class="logo">
+                <img src="public/LOGO.png" alt="AyitiShop&Ship Logo" id="logo">
+            </div>
+      <p><strong>Shipping from USA to Haiti</strong></p>
+    </div>
+  </div>
+
+  <!-- Milieu -->
+  <div class="middle section">
+    <p><strong>Destinataire:</strong>${data.destinataire}</p>
+    <p><strong>Ville:</strong> ${data.ville}</p>
+    <p><strong>Poids:</strong> ${data.poids} lbs</p>
+    <p><strong>Description:</strong> ${data.description}</p>
+    <p class="tracking"><strong>Numéro de suivi:</strong> ${currentTrackingNumber}</p>
+  </div>
+
+  <!-- Bas -->
+  <div class="bottom section">
+    <p>Merci d’avoir choisi <strong>AyitiShop&Ship</strong> ✈️</p>
+    <p>ayitishopship.com</p>
+  </div>
+</div>
+                </body>
+            </html>
+        `);
+
+        printWindow.document.close();
+        printWindow.print();
+    }
+}
+
     </script>
 </body>
 </html>

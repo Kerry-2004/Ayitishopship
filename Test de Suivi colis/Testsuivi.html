@@ -1,0 +1,558 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Suivi de Colis - AyitiShop&Ship</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+<style>
+/* Votre CSS actuel pour la mise en page et le style */
+ * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+            min-height: 100vh;
+            color: #1a202c;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 2rem 1rem;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
+        .back-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.75rem 1.5rem;
+            background: white;
+            color: #001b72;
+            text-decoration: none;
+            border-radius: 0.5rem;
+            font-weight: 500;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            transition: all 0.3s ease;
+            margin-bottom: 2rem;
+        }
+
+        .back-btn:hover {
+            background: #001b72;
+            color: white;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+        }
+
+        .page-title {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: #001b72;
+            margin-bottom: 1rem;
+        }
+
+        .page-subtitle {
+            font-size: 1.125rem;
+            color: #6b7280;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .search-container {
+            background: white;
+            border-radius: 1rem;
+            padding: 2rem;
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1);
+            border: 1px solid #f3f4f6;
+            margin-bottom: 2rem;
+        }
+
+        .search-form {
+            display: flex;
+            gap: 1rem;
+            align-items: end;
+        }
+
+        .search-group {
+            flex: 1;
+        }
+
+        .search-group label {
+            display: block;
+            font-weight: 600;
+            color: #001b72;
+            margin-bottom: 0.5rem;
+        }
+
+        .search-input {
+            width: 100%;
+            padding: 0.75rem;
+            border: 2px solid #e5e7eb;
+            border-radius: 0.5rem;
+            font-size: 1rem;
+            transition: border-color 0.3s ease;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        .search-input:focus {
+            outline: none;
+            border-color: #ea002a;
+            box-shadow: 0 0 0 3px rgba(234, 0, 42, 0.1);
+        }
+
+        .search-btn {
+            background: linear-gradient(135deg, #ea002a, #ff4757);
+            color: white;
+            border: none;
+            padding: 0.75rem 2rem;
+            border-radius: 0.5rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            white-space: nowrap;
+        }
+
+        .search-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px -5px rgba(234, 0, 42, 0.3);
+        }
+
+        @media (max-width: 768px) {
+            .search-form {
+                flex-direction: column;
+                align-items: stretch;
+            }
+        }
+
+        .tracking-result {
+            background: white;
+            border-radius: 1rem;
+            padding: 2rem;
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1);
+            border: 1px solid #f3f4f6;
+            display: none;
+        }
+
+        .package-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: start;
+            margin-bottom: 2rem;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .package-info h3 {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #001b72;
+            margin-bottom: 0.5rem;
+        }
+
+        .tracking-number {
+            font-size: 1.125rem;
+            color: #6b7280;
+            font-family: 'Courier New', monospace;
+        }
+
+        .status-badge {
+            padding: 0.5rem 1rem;
+            border-radius: 9999px;
+            font-weight: 600;
+            font-size: 0.875rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .status-registered {
+            background: #dbeafe;
+            color: #1e40af;
+        }
+
+        .status-transit {
+            background: #fef3c7;
+            color: #d97706;
+        }
+
+        .status-arrived {
+            background: #e0e7ff;
+            color: #5b21b6;
+        }
+
+        .status-delivery {
+            background: #fecaca;
+            color: #dc2626;
+        }
+
+        .status-delivered {
+            background: #dcfce7;
+            color: #16a34a;
+        }
+
+        .package-details {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin-bottom: 2rem;
+            padding: 1.5rem;
+            background: #f8fafc;
+            border-radius: 0.75rem;
+        }
+
+        .detail-item {
+            text-align: center;
+        }
+
+        .detail-label {
+            font-size: 0.875rem;
+            color: #6b7280;
+            margin-bottom: 0.25rem;
+        }
+
+        .detail-value {
+            font-weight: 600;
+            color: #001b72;
+        }
+
+        .timeline {
+            position: relative;
+            padding-left: 2rem;
+        }
+
+        .timeline::before {
+            content: '';
+            position: absolute;
+            left: 1rem;
+            top: 0;
+            bottom: 0;
+            width: 2px;
+            background: #e5e7eb;
+        }
+
+        .timeline-item {
+            position: relative;
+            margin-bottom: 2rem;
+            padding-left: 2rem;
+        }
+
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            left: -2rem;
+            top: 0.5rem;
+            width: 1rem;
+            height: 1rem;
+            border-radius: 50%;
+            border: 3px solid #e5e7eb;
+            background: white;
+            z-index: 1;
+        }
+
+        .timeline-item.active::before {
+            border-color: #ea002a;
+            background: #ea002a;
+        }
+
+        .timeline-item.completed::before {
+            border-color: #10b981;
+            background: #10b981;
+        }
+
+        .timeline-content {
+            background: white;
+            border: 2px solid #f3f4f6;
+            border-radius: 0.75rem;
+            padding: 1.5rem;
+            transition: all 0.3s ease;
+        }
+
+        .timeline-item.active .timeline-content {
+            border-color: #ea002a;
+            box-shadow: 0 4px 6px -1px rgba(234, 0, 42, 0.1);
+        }
+
+        .timeline-item.completed .timeline-content {
+            border-color: #10b981;
+            background: #f0fdf4;
+        }
+
+        .timeline-title {
+            font-weight: 600;
+            color: #001b72;
+            margin-bottom: 0.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .timeline-item.active .timeline-title {
+            color: #ea002a;
+        }
+
+        .timeline-item.completed .timeline-title {
+            color: #10b981;
+        }
+
+        .timeline-description {
+            color: #6b7280;
+            margin-bottom: 0.5rem;
+        }
+
+        .timeline-date {
+            font-size: 0.875rem;
+            color: #9ca3af;
+            font-weight: 500;
+        }
+
+        .timeline-item.active .timeline-date,
+        .timeline-item.completed .timeline-date {
+            color: #374151;
+        }
+
+        .no-result {
+            text-align: center;
+            padding: 3rem 2rem;
+            color: #6b7280;
+        }
+
+        .no-result-icon {
+            font-size: 4rem;
+            margin-bottom: 1rem;
+            opacity: 0.5;
+        }
+
+        .estimated-delivery {
+            background: linear-gradient(135deg, #eff6ff, #dbeafe);
+            border: 1px solid #93c5fd;
+            border-radius: 0.75rem;
+            padding: 1.5rem;
+            margin-top: 2rem;
+            text-align: center;
+        }
+
+        .estimated-delivery h4 {
+            color: #1e40af;
+            margin-bottom: 0.5rem;
+        }
+
+        .estimated-date {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: #001b72;
+        }
+/* Badge statuts */
+.status-registered { background: #dbeafe; color: #1e40af; padding: 0.5rem 1rem; border-radius: 9999px; }
+.status-transit { background: #fef3c7; color: #d97706; padding: 0.5rem 1rem; border-radius: 9999px; }
+.status-arrived { background: #e0e7ff; color: #5b21b6; padding: 0.5rem 1rem; border-radius: 9999px; }
+.status-delivery { background: #fecaca; color: #dc2626; padding: 0.5rem 1rem; border-radius: 9999px; }
+.status-delivered { background: #dcfce7; color: #16a34a; padding: 0.5rem 1rem; border-radius: 9999px; }
+</style>
+</head>
+<body>
+<div class="container">
+    <div class="header">
+         <a href="index.html" class="back-btn">
+                <i class="fas fa-arrow-left"></i>
+                Retour à l'accueil
+            </a>
+        <h1 class="page-title">Suivi de Colis</h1>
+        <p class="page-subtitle">Entrez votre numéro de suivi pour connaître l'état de votre colis en temps réel</p>
+    </div>
+
+    <div class="search-container">
+        <form class="search-form" id="trackingForm">
+            <input type="text" id="trackingNumber" class="search-input" placeholder="Ex: ASH-123456789" required>
+            <button type="submit" class="search-btn" id="searchBtn">Rechercher</button>
+        </form>
+    </div>
+
+    <div class="tracking-result" id="trackingResult"></div>
+    <!-- Contenu dynamique généré par JavaScript -->
+</div>
+
+<script>
+// Définition des étapes de suivi
+const trackingSteps = [
+    {id:'registered', title:'Colis Enregistré', icon:'fas fa-clipboard-check'},
+    {id:'transit', title:'En Transit', icon:'fas fa-plane'},
+    {id:'arrived', title:'Arrivé au Dépôt', icon:'fas fa-warehouse'},
+    {id:'delivery', title:'En Cours de Livraison', icon:'fas fa-truck'},
+    {id:'delivered', title:'Livré', icon:'fas fa-check-circle'}
+];
+
+// Retourne la classe CSS selon le statut
+function getStatusBadgeClass(status) {
+    const statusClasses = {
+        'registered': 'status-registered',
+        'transit': 'status-transit',
+        'arrived': 'status-arrived',
+        'delivery': 'status-delivery',
+        'delivered': 'status-delivered'
+    };
+    return statusClasses[status] || 'status-registered';
+}
+
+// Retourne le texte lisible du statut
+function getStatusText(status) {
+    const statusTexts = {
+        'registered': 'Enregistré',
+        'transit': 'En Transit',
+        'arrived': 'Au Dépôt',
+        'delivery': 'En Livraison',
+        'delivered': 'Livré'
+    };
+    return statusTexts[status] || 'Inconnu';
+}
+
+// Formate la date en français
+function formatDate(date) {
+    return new Date(date).toLocaleDateString('fr-FR', {
+        day: 'numeric',
+        month: 'long',
+        year: 'numeric',
+        hour: '2-digit',
+        minute: '2-digit'
+    });
+}
+
+// Affiche les informations du colis
+function displayTrackingResult(data) {
+    const resultContainer = document.getElementById('trackingResult');
+    
+      // Crée la timeline à partir des étapes et du statut réel
+    const currentIndex = trackingSteps.findIndex(step => step.id === data.currentStatus);
+    const timeline = trackingSteps.map((step, index) => ({
+        ...step,
+        status: index === 0 ? 'completed' :           // Toujours cocher "Colis Enregistré"
+                index <= currentIndex ? 'active' :   // Étapes jusqu'au statut actuel
+                'pending',                            // Étapes futures
+        date: index === 0 ? new Date(data.createdAt) :       // Date pour "Colis Enregistré"
+              index <= currentIndex ? new Date(data.dates?.[step.id] || data.createdAt) : null,
+        description: `Étape ${step.title} du colis`
+    }));
+
+    const html = `
+        <div class="package-header">
+            <div class="package-info">
+                <h3>Colis de ${data.clientName}</h3>
+                <div class="tracking-number">${data.trackingNumber}</div>
+            </div>
+            <div class="status-badge ${getStatusBadgeClass(data.currentStatus)}">
+                ${getStatusText(data.currentStatus)}
+            </div>
+        </div>
+
+        <div class="package-details">
+            <div class="detail-item">
+                <div class="detail-label">Destination</div>
+                <div class="detail-value">${data.destination}</div>
+            </div>
+            <div class="detail-item">
+                <div class="detail-label">Poids</div>
+                <div class="detail-value">${data.weight}</div>
+            </div>
+            <div class="detail-item">
+                <div class="detail-label">Description</div>
+                <div class="detail-value">${data.description}</div>
+            </div>
+        </div>
+
+        <div class="timeline">
+            ${timeline.map(step => `
+                <div class="timeline-item ${step.status}">
+                    <div class="timeline-content">
+                        <div class="timeline-title">
+                            <i class="${step.icon}"></i> ${step.title}
+                        </div>
+                        <div class="timeline-description">${step.description}</div>
+                        ${step.date ? `<div class="timeline-date">${formatDate(step.date)}</div>` : ''}
+                    </div>
+                </div>
+            `).join('')}
+        </div>
+
+        ${data.currentStatus !== 'delivered' ? `
+            <div class="estimated-delivery">
+                <h4><i class="fas fa-calendar-alt"></i> Livraison Estimée</h4>
+                <div class="estimated-date">${formatDate(data.estimatedDelivery)}</div>
+            </div>
+        ` : ''}
+    `;
+    resultContainer.innerHTML = html;
+    resultContainer.style.display = 'block';
+}
+
+// Affichage si aucun colis trouvé
+function displayNoResult() {
+    const resultContainer = document.getElementById('trackingResult');
+    resultContainer.innerHTML = `
+        <div class="no-result">
+            <div class="no-result-icon"><i class="fas fa-search"></i></div>
+            <h3>Aucun Colis Trouvé</h3>
+            <p>Le numéro de suivi que vous avez saisi n'existe pas dans notre système.</p>
+        </div>
+    `;
+    resultContainer.style.display = 'block';
+}
+
+// Gestion du formulaire de recherche
+document.getElementById('trackingForm').addEventListener('submit', async function(e){
+    e.preventDefault();
+    const trackingNumber = document.getElementById('trackingNumber').value.trim();
+    const btn = document.getElementById('searchBtn');
+    const originalText = btn.innerHTML;
+
+    if (!trackingNumber) {
+        alert('Veuillez entrer un numéro de suivi');
+        return;
+    }
+
+    btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Recherche...';
+    btn.disabled = true;
+
+    try {
+        const response = await fetch(`getColis.php?trackingNumber=${trackingNumber}`);
+        const result = await response.json();
+        
+        if (result.success && result.data) {
+            const d = result.data;
+            const data = {
+                trackingNumber: d.numero_suivi,
+                clientName: d.destinataire_nom,
+                destination: d.ville_recuperation,
+                weight: d.poids_lbs + ' lbs',
+                description: d.description_detaillee,
+                currentStatus: d.statut,
+                estimatedDelivery: d.date_prevue_arrivee,
+                createdAt: d.date_enregistrement,
+                dates: d.dates_etapes // objet optionnel contenant les dates de chaque étape
+            };
+            displayTrackingResult(data);
+        } else {
+            displayNoResult();
+        }
+    } catch(err) {
+        alert('Erreur: ' + err.message);
+    } finally {
+        btn.innerHTML = originalText;
+        btn.disabled = false;
+    }
+});
+
+
+</script>
+</body>
+</html>

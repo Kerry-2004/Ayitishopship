@@ -4,7 +4,38 @@ require_once 'config/database.php';
 /**
  * Gestionnaire des colis - Classe principale pour la gestion des colis
  */
-class ColisManager {
+<?php
+class Database {
+    private static $instance = null;
+    private $conn;
+
+    private $host = "localhost";
+    private $user = "root";
+    private $pass = ""; // mot de passe MySQL (souvent vide sous XAMPP)
+    private $dbname = "shipping_db"; // ⚠️ crée cette base dans phpMyAdmin
+
+    private function __construct() {
+        try {
+            $this->conn = new PDO(
+                "mysql:host={$this->host};dbname={$this->dbname};charset=utf8",
+                $this->user,
+                $this->pass
+            );
+            $this->conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+        } catch (PDOException $e) {
+            die("Erreur connexion MySQL: " . $e->getMessage());
+        }
+    }
+
+    public static function getInstance() {
+        if (!self::$instance) {
+            self::$instance = new Database();
+        }
+        return self::$instance->conn;
+    }
+}
+
+/** class ColisManager {
     private $db;
     private $helper;
     
@@ -12,7 +43,7 @@ class ColisManager {
         $this->db = Database::getInstance();
         $this->helper = new DatabaseHelper();
     }
-    
+    */
     /**
      * Enregistre un nouveau colis
      */
