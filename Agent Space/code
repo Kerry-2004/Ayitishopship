@@ -1,0 +1,5 @@
+<li>
+          <i class='bx bx-chevron-right toggle icon'></i>
+          <span class="text nav-text"><strong><?= htmlspecialchars($_SESSION['nom_complet']) ?></strong></p>
+          <p>Rôle : <strong><?= htmlspecialchars($_SESSION['role']) ?></strong></p></span>
+        </li>

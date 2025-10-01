@@ -1,0 +1,115 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no" />
+  <title>Recherche avec QR Scanner</title>
+  <style>
+    body{font-family:Arial, sans-serif;margin:0;padding:16px;}
+    .search-container{display:flex;align-items:center;gap:8px;}
+    #searchBar{flex:1;padding:10px;border:1px solid #ccc;border-radius:6px;font-size:16px;}
+    #scanLink{padding:10px 16px;background:#007bff;color:#fff;text-decoration:none;border-radius:6px;font-size:16px;}
+    .overlay{position:fixed;inset:0;background:rgba(0,0,0,0.8);display:flex;align-items:center;justify-content:center;z-index:1000;}
+    .scanner{background:#fff;padding:12px;border-radius:8px;max-width:480px;width:95%;display:flex;flex-direction:column;gap:8px;align-items:center;}
+    video{width:100%;max-height:70vh;border-radius:6px;background:#000;}
+    button{padding:8px 14px;border-radius:6px;border:none;cursor:pointer;font-size:16px;}
+    #closeBtn{background:#dc3545;color:#fff;}
+    #status{font-size:14px;color:#555;}
+  </style>
+</head>
+<body>
+  <h2>Recherche avec QR Code</h2>
+
+  <div class="search-container">
+    <input type="text" id="searchBar" placeholder="Tapez ou scannez un code...">
+    <a href="#" id="scanLink">📷 Scanner</a>
+  </div>
+
+  <!-- Modal scanner -->
+  <div id="modal" class="overlay" style="display:none;">
+    <div class="scanner">
+      <video id="video" playsinline></video>
+      <canvas id="canvas" style="display:none;"></canvas>
+      <div id="status">📡 Scannez un QR code…</div>
+      <button id="closeBtn">Fermer</button>
+    </div>
+  </div>
+
+  <!-- jsQR -->
+  <script src="https://cdn.jsdelivr.net/npm/jsqr@1.4.0/dist/jsQR.js"></script>
+
+  <script>
+    const scanLink = document.getElementById('scanLink');
+    const modal = document.getElementById('modal');
+    const video = document.getElementById('video');
+    const canvas = document.getElementById('canvas');
+    const searchBar = document.getElementById('searchBar');
+    const closeBtn = document.getElementById('closeBtn');
+    const status = document.getElementById('status');
+
+    let stream = null;
+    let scanning = false;
+    let scanInterval = null;
+
+    scanLink.addEventListener('click', async (e) => {
+      e.preventDefault();
+      modal.style.display = 'flex';
+      try {
+        // Essayer caméra arrière
+        stream = await navigator.mediaDevices.getUserMedia({
+          video: { facingMode: { exact: "environment" } },
+          audio: false
+        });
+      } catch (err) {
+        // Si pas dispo, prendre la caméra par défaut
+        stream = await navigator.mediaDevices.getUserMedia({ video: true });
+      }
+
+      video.srcObject = stream;
+      await video.play();
+      scanning = true;
+      startScanning();
+    });
+
+    function stopScanner() {
+      scanning = false;
+      if (scanInterval) clearInterval(scanInterval);
+      if (video) {
+        video.pause();
+        video.srcObject = null;
+      }
+      if (stream) {
+        stream.getTracks().forEach(t => t.stop());
+      }
+    }
+
+    closeBtn.addEventListener('click', () => {
+      stopScanner();
+      modal.style.display = 'none';
+    });
+
+    function startScanning() {
+      const ctx = canvas.getContext('2d');
+      scanInterval = setInterval(() => {
+        if (!scanning || video.readyState !== video.HAVE_ENOUGH_DATA) return;
+
+        canvas.width = video.videoWidth;
+        canvas.height = video.videoHeight;
+        ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
+
+        const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+        const code = jsQR(imageData.data, imageData.width, imageData.height);
+
+        if (code) {
+          searchBar.value = code.data; // remplir la barre
+          status.textContent = "✅ Code détecté : " + code.data;
+          stopScanner();
+          setTimeout(()=> modal.style.display = 'none', 800);
+        } else {
+          status.textContent = "📡 Recherche de QR code…";
+        }
+      }, 250);
+    }
+  </script>
+</body>
+</html>

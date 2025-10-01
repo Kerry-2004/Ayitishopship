@@ -1,0 +1,1094 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no" />
+    <title>Suivi de Colis - AyitiShop&Ship</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href='https://unpkg.com/boxicons@2.1.1/css/boxicons.min.css' rel='stylesheet'>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+            min-height: 100vh;
+            color: #1a202c;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 2rem 1rem;
+        }
+
+        .icon {
+            min-width: 20px;
+            border-radius: 6px;
+            height: 100%;
+            transform: scale(1.5);
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
+        .back-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.75rem 1.5rem;
+            background: white;
+            color: #001b72;
+            text-decoration: none;
+            border-radius: 0.5rem;
+            font-weight: 500;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            transition: all 0.3s ease;
+            margin-bottom: 2rem;
+        }
+
+        .back-btn:hover {
+            background: #001b72;
+            color: white;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+        }
+
+        .page-title {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: #001b72;
+            margin-bottom: 1rem;
+        }
+
+        .page-subtitle {
+            font-size: 1.125rem;
+            color: #6b7280;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .search-container {
+            background: white;
+            border-radius: 1rem;
+            padding: 2rem;
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1);
+            border: 1px solid #f3f4f6;
+            margin-bottom: 2rem;
+        }
+
+        .search-form {
+            display: flex;
+            gap: 1rem;
+            align-items: end;
+        }
+
+        .search-group {
+            flex: 1;
+        }
+
+        .search-group label {
+            display: block;
+            font-weight: 600;
+            color: #001b72;
+            margin-bottom: 0.5rem;
+        }
+
+        .search-input {
+            width: 100%;
+            padding: 0.75rem;
+            border: 2px solid #e5e7eb;
+            border-radius: 0.5rem;
+            font-size: 1rem;
+            transition: border-color 0.3s ease;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        .search-input:focus {
+            outline: none;
+            border-color: #ea002a;
+            box-shadow: 0 0 0 3px rgba(234, 0, 42, 0.1);
+        }
+
+        .search-btn {
+            background: linear-gradient(135deg, #ea002a, #ff4757);
+            color: white;
+            border: none;
+            padding: 0.75rem 2rem;
+            border-radius: 0.5rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            white-space: nowrap;
+        }
+
+        .search-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px -5px rgba(234, 0, 42, 0.3);
+        }
+
+        .search-btn:disabled {
+            opacity: 0.7;
+            transform: none;
+            cursor: not-allowed;
+        }
+
+        #scanLink {
+            padding: 0.75rem;
+            background: #001b72;
+            color: white;
+            text-decoration: none;
+            border-radius: 0.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+        }
+
+        #scanLink:hover {
+            background: #002a8a;
+            transform: translateY(-2px);
+        }
+
+        @media (max-width: 768px) {
+            .search-form {
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+            .page-title {
+                font-size: 2rem;
+            }
+        }
+
+        .tracking-result {
+            background: white;
+            border-radius: 1rem;
+            padding: 2rem;
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1);
+            border: 1px solid #f3f4f6;
+            display: none;
+        }
+
+        .package-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: start;
+            margin-bottom: 2rem;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .package-info h3 {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #001b72;
+            margin-bottom: 0.5rem;
+        }
+
+        .tracking-number {
+            font-size: 1.125rem;
+            color: #6b7280;
+            font-family: 'Courier New', monospace;
+        }
+
+        .status-badge {
+            padding: 0.5rem 1rem;
+            border-radius: 9999px;
+            font-weight: 600;
+            font-size: 0.875rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .status-registered { background: #dbeafe; color: #1e40af; }
+        .status-transit { background: #fef3c7; color: #d97706; }
+        .status-arrived { background: #e0e7ff; color: #5b21b6; }
+        .status-delivery { background: #fecaca; color: #dc2626; }
+        .status-delivered { background: #dcfce7; color: #16a34a; }
+
+        .package-details {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin-bottom: 2rem;
+            padding: 1.5rem;
+            background: #f8fafc;
+            border-radius: 0.75rem;
+        }
+
+        .detail-item {
+            text-align: center;
+        }
+
+        .detail-label {
+            font-size: 0.875rem;
+            color: #6b7280;
+            margin-bottom: 0.25rem;
+            font-weight: 500;
+        }
+
+        .detail-value {
+            font-weight: 600;
+            color: #001b72;
+            font-size: 1rem;
+        }
+
+        .current-status {
+            background: linear-gradient(135deg, #f0f9ff, #e0f2fe);
+            border: 2px solid #38bdf8;
+            border-radius: 0.75rem;
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+            text-align: center;
+        }
+
+        .current-status h4 {
+            color: #0369a1;
+            margin-bottom: 0.5rem;
+            font-size: 1.2rem;
+        }
+
+        .current-status .status-info {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: #001b72;
+            margin-bottom: 0.5rem;
+        }
+
+        .current-status .location {
+            color: #6b7280;
+            margin-bottom: 0.5rem;
+        }
+
+        .current-status .date {
+            color: #6b7280;
+            font-size: 0.9rem;
+        }
+
+        .timeline {
+            position: relative;
+            padding-left: 2rem;
+        }
+
+        .timeline::before {
+            content: '';
+            position: absolute;
+            left: 1rem;
+            top: 0;
+            bottom: 0;
+            width: 2px;
+            background: #e5e7eb;
+        }
+
+        .timeline-item {
+            position: relative;
+            margin-bottom: 2rem;
+            padding-left: 2rem;
+        }
+
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            left: -2rem;
+            top: 0.5rem;
+            width: 1rem;
+            height: 1rem;
+            border-radius: 50%;
+            border: 3px solid #e5e7eb;
+            background: white;
+            z-index: 1;
+        }
+
+        .timeline-item.active::before {
+            border-color: #ea002a;
+            background: #ea002a;
+        }
+
+        .timeline-item.completed::before {
+            border-color: #10b981;
+            background: #10b981;
+        }
+
+        .timeline-content {
+            background: white;
+            border: 2px solid #f3f4f6;
+            border-radius: 0.75rem;
+            padding: 1.5rem;
+            transition: all 0.3s ease;
+        }
+
+        .timeline-item.active .timeline-content {
+            border-color: #ea002a;
+            box-shadow: 0 4px 6px -1px rgba(234, 0, 42, 0.1);
+            background: #fef2f2;
+        }
+
+        .timeline-item.completed .timeline-content {
+            border-color: #10b981;
+            background: #f0fdf4;
+        }
+
+        .timeline-title {
+            font-weight: 600;
+            color: #001b72;
+            margin-bottom: 0.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .timeline-item.active .timeline-title {
+            color: #ea002a;
+        }
+
+        .timeline-item.completed .timeline-title {
+            color: #10b981;
+        }
+
+        .timeline-description {
+            color: #6b7280;
+            margin-bottom: 0.5rem;
+        }
+
+        .timeline-location {
+            color: #374151;
+            font-weight: 500;
+            margin-bottom: 0.25rem;
+            font-size: 0.95rem;
+        }
+
+        .timeline-comment {
+            color: #6b7280;
+            font-style: italic;
+            margin-bottom: 0.5rem;
+            font-size: 0.9rem;
+        }
+
+        .timeline-date {
+            font-size: 0.875rem;
+            color: #9ca3af;
+            font-weight: 500;
+        }
+
+        .timeline-item.active .timeline-date,
+        .timeline-item.completed .timeline-date {
+            color: #374151;
+        }
+
+        /* Timeline principale avec 4 étapes */
+        .main-timeline {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin: 2rem 0;
+            padding: 2rem;
+            background: white;
+            border-radius: 1rem;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            position: relative;
+        }
+
+        .main-timeline::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 10%;
+            right: 10%;
+            height: 4px;
+            background: #e5e7eb;
+            z-index: 1;
+        }
+
+        .timeline-step {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            position: relative;
+            z-index: 2;
+            flex: 1;
+        }
+
+        .step-icon {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            margin-bottom: 0.5rem;
+            transition: all 0.3s ease;
+            border: 4px solid;
+        }
+
+        .step-icon.completed {
+            background: #10b981;
+            border-color: #10b981;
+            color: white;
+        }
+
+        .step-icon.active {
+            background: #3b82f6;
+            border-color: #3b82f6;
+            color: white;
+            animation: pulse 2s infinite;
+        }
+
+        .step-icon.pending {
+            background: #f3f4f6;
+            border-color: #d1d5db;
+            color: #9ca3af;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+
+        .step-title {
+            font-weight: 600;
+            font-size: 0.875rem;
+            margin-bottom: 0.25rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .step-title.completed {
+            color: #10b981;
+        }
+
+        .step-title.active {
+            color: #3b82f6;
+        }
+
+        .step-title.pending {
+            color: #9ca3af;
+        }
+
+        .step-date {
+            font-size: 0.75rem;
+            color: #6b7280;
+        }
+
+        .step-date.active {
+            color: #3b82f6;
+            font-weight: 500;
+        }
+
+        @media (max-width: 768px) {
+            .main-timeline {
+                flex-direction: column;
+                gap: 2rem;
+            }
+
+            .main-timeline::before {
+                top: 10%;
+                bottom: 10%;
+                left: 50%;
+                right: auto;
+                width: 4px;
+                height: auto;
+            }
+
+            .timeline-step {
+                flex-direction: row;
+                text-align: left;
+                width: 100%;
+                gap: 1rem;
+            }
+
+            .step-icon {
+                margin-bottom: 0;
+                width: 50px;
+                height: 50px;
+                font-size: 1.25rem;
+            }
+        }
+
+        .no-result {
+            text-align: center;
+            padding: 3rem 2rem;
+            color: #6b7280;
+        }
+
+        .no-result-icon {
+            font-size: 4rem;
+            margin-bottom: 1rem;
+            opacity: 0.5;
+        }
+
+        .estimated-delivery {
+            background: linear-gradient(135deg, #eff6ff, #dbeafe);
+            border: 1px solid #93c5fd;
+            border-radius: 0.75rem;
+            padding: 1.5rem;
+            margin-top: 2rem;
+            text-align: center;
+        }
+
+        .estimated-delivery h4 {
+            color: #1e40af;
+            margin-bottom: 0.5rem;
+        }
+
+        .estimated-date {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: #001b72;
+        }
+
+        .current-status {
+            background: linear-gradient(135deg, #f0f9ff, #e0f2fe);
+            border: 2px solid #38bdf8;
+            border-radius: 0.75rem;
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+            text-align: center;
+        }
+
+        .current-status h4 {
+            color: #0369a1;
+            margin-bottom: 0.5rem;
+            font-size: 1.2rem;
+        }
+
+        .current-status .status-info {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: #001b72;
+            margin-bottom: 0.5rem;
+        }
+
+        .current-status .location {
+            color: #6b7280;
+            margin-bottom: 0.5rem;
+        }
+
+        .current-status .date {
+            color: #6b7280;
+            font-size: 0.9rem;
+        }
+
+        .timeline-location {
+            color: #374151;
+            font-weight: 500;
+            margin-bottom: 0.25rem;
+            font-size: 0.95rem;
+        }
+
+        .timeline-comment {
+            color: #6b7280;
+            font-style: italic;
+            margin-bottom: 0.5rem;
+            font-size: 0.9rem;
+        }
+
+        .error-message {
+            background: #fef2f2;
+            border: 1px solid #fecaca;
+            color: #dc2626;
+            padding: 1rem;
+            border-radius: 0.5rem;
+            margin-bottom: 1rem;
+            text-align: center;
+        }
+
+        .loading {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 3px solid #f3f3f3;
+            border-top: 3px solid #ea002a;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* Modal Scanner */
+        .overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,0.8);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+        }
+
+        .scanner {
+            background: #fff;
+            padding: 20px;
+            border-radius: 12px;
+            max-width: 480px;
+            width: 95%;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            align-items: center;
+        }
+
+        video {
+            width: 100%;
+            max-height: 70vh;
+            border-radius: 8px;
+            background: #000;
+        }
+
+        button {
+            padding: 10px 20px;
+            border-radius: 6px;
+            border: none;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: 500;
+        }
+
+        #closeBtn {
+            background: #dc3545;
+            color: #fff;
+        }
+
+        #closeBtn:hover {
+            background: #c82333;
+        }
+
+        #status {
+            font-size: 14px;
+            color: #555;
+            text-align: center;
+        }
+
+        .loading {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 3px solid #f3f3f3;
+            border-top: 3px solid #ea002a;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .error-message {
+            background: #fef2f2;
+            border: 1px solid #fecaca;
+            color: #dc2626;
+            padding: 1rem;
+            border-radius: 0.5rem;
+            margin-bottom: 1rem;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <a href="./index.html" class="back-btn">
+                <i class="fas fa-arrow-left"></i>
+                Retour aux Accueil
+            </a>
+            <h1 class="page-title">Suivi de Colis</h1>
+            <p class="page-subtitle">Entrez votre numéro de suivi pour connaître l'état de votre colis en temps réel</p>
+        </div>
+
+        <div class="search-container">
+            <form class="search-form" id="trackingForm">
+                <div class="search-group">
+                    <label for="trackingNumber">Numéro de suivi</label>
+                    <input type="text" id="trackingNumber" class="search-input" placeholder="Ex: ASH-123456789" required>
+                </div>
+                <button type="submit" class="search-btn" id="searchBtn">
+                    <i class="fas fa-search"></i>
+                    Rechercher
+                </button>
+                <a href="#" id="scanLink" title="Scanner QR Code">
+                    <i class='bx bx-qr-scan icon'></i>
+                </a>
+            </form>
+        </div>
+
+        <!-- Modal scanner -->
+        <div id="modal" class="overlay" style="display:none;">
+            <div class="scanner">
+                <video id="video" playsinline></video>
+                <canvas id="canvas" style="display:none;"></canvas>
+                <div id="status">📡 Scannez un QR code…</div>
+                <button id="closeBtn">Fermer</button>
+            </div>
+        </div>
+
+        <div class="tracking-result" id="trackingResult"></div>
+    </div>
+
+    <!-- jsQR -->
+    <script src="https://cdn.jsdelivr.net/npm/jsqr@1.4.0/dist/jsQR.js"></script>
+
+    <script>
+        // Scanner QR Code
+        const scanLink = document.getElementById('scanLink');
+        const modal = document.getElementById('modal');
+        const video = document.getElementById('video');
+        const canvas = document.getElementById('canvas');
+        const searchBar = document.getElementById('trackingNumber');
+        const closeBtn = document.getElementById('closeBtn');
+        const status = document.getElementById('status');
+
+        let stream = null;
+        let scanning = false;
+        let scanInterval = null;
+
+        scanLink.addEventListener('click', async (e) => {
+            e.preventDefault();
+            modal.style.display = 'flex';
+            try {
+                stream = await navigator.mediaDevices.getUserMedia({
+                    video: { facingMode: { exact: "environment" } },
+                    audio: false
+                });
+            } catch (err) {
+                stream = await navigator.mediaDevices.getUserMedia({ video: true });
+            }
+
+            video.srcObject = stream;
+            await video.play();
+            scanning = true;
+            startScanning();
+        });
+
+        function stopScanner() {
+            scanning = false;
+            if (scanInterval) clearInterval(scanInterval);
+            if (video) {
+                video.pause();
+                video.srcObject = null;
+            }
+            if (stream) {
+                stream.getTracks().forEach(t => t.stop());
+            }
+        }
+
+        closeBtn.addEventListener('click', () => {
+            stopScanner();
+            modal.style.display = 'none';
+        });
+
+        function startScanning() {
+            const ctx = canvas.getContext('2d');
+            scanInterval = setInterval(() => {
+                if (!scanning || video.readyState !== video.HAVE_ENOUGH_DATA) return;
+
+                canvas.width = video.videoWidth;
+                canvas.height = video.videoHeight;
+                ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
+
+                const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+                const code = jsQR(imageData.data, imageData.width, imageData.height);
+
+                if (code) {
+                    searchBar.value = code.data;
+                    status.textContent = "✅ Code détecté : " + code.data;
+                    stopScanner();
+                    setTimeout(() => modal.style.display = 'none', 800);
+                } else {
+                    status.textContent = "📡 Recherche de QR code…";
+                }
+            }, 250);
+        }
+
+        // Système de suivi de colis
+        function getStatusBadgeClass(status) {
+            const statusClasses = {
+                'Colis enregistre': 'status-registered',
+                'En Transit': 'status-transit',
+                'Arrivé au Dépôt': 'status-arrived',
+                'En Cours de Livraison': 'status-delivery',
+                'Livré': 'status-delivered'
+            };
+            return statusClasses[status] || 'status-registered';
+        }
+
+        function formatDate(dateString) {
+            if (!dateString) return 'Date non disponible';
+            
+            const date = new Date(dateString);
+            return date.toLocaleDateString('fr-FR', {
+                day: '2-digit',
+                month: 'long',
+                year: 'numeric',
+                hour: '2-digit',
+                minute: '2-digit'
+            });
+        }
+
+        function getCurrentStatus(historique) {
+            if (!historique || historique.length === 0) {
+                return {
+                    statut: 'Colis enregistre',
+                    localisation: 'Dépôt principal',
+                    commentaire: 'Colis enregistré dans le système',
+                    date: null
+                };
+            }
+            
+            // Trier par date décroissante pour obtenir le plus récent
+            const sorted = historique.sort((a, b) => new Date(b.date_scan) - new Date(a.date_scan));
+            return {
+                statut: sorted[0].nouveau_statut,
+                localisation: sorted[0].localisation || 'Non spécifiée',
+                commentaire: sorted[0].commentaire || '',
+                date: sorted[0].date_scan
+            };
+        }
+
+        function mapStatusToStep(status) {
+            const mapping = {
+                'Colis enregistre': 0,
+                'REÇU': 0,
+                'En Transit': 1,
+                'EN TRANSIT': 1,
+                'Arrivé au Dépôt': 2,
+                'DISPONIBLE': 2,
+                'Livré': 3,
+                'LIVRÉ': 3
+            };
+            return mapping[status] !== undefined ? mapping[status] : 0;
+        }
+
+        function createMainTimeline(currentStatus, currentDate) {
+            const steps = [
+                { title: 'REÇU', icon: 'fas fa-clipboard-check' },
+                { title: 'EN TRANSIT', icon: 'fa-solid fa-plane' },
+                { title: 'DISPONIBLE', icon: 'fas fa-warehouse' },
+                { title: 'LIVRÉ', icon: 'fas fa-home' }
+            ];
+
+            const currentStepIndex = mapStatusToStep(currentStatus);
+
+            return `
+                <div class="main-timeline">
+                    ${steps.map((step, index) => {
+                        let stepClass = 'pending';
+                        let titleClass = 'pending';
+                        let dateClass = '';
+                        
+                        if (index < currentStepIndex) {
+                            stepClass = 'completed';
+                            titleClass = 'completed';
+                        } else if (index === currentStepIndex) {
+                            stepClass = 'active';
+                            titleClass = 'active';
+                            dateClass = 'active';
+                        }
+
+                        return `
+                            <div class="timeline-step">
+                                <div class="step-icon ${stepClass}">
+                                    <i class="${step.icon}"></i>
+                                </div>
+                                <div class="step-title ${titleClass}">${step.title}</div>
+                                ${index === currentStepIndex && currentDate ? 
+                                    `<div class="step-date ${dateClass}">${formatDate(currentDate)}</div>` : 
+                                    '<div class="step-date"></div>'
+                                }
+                            </div>
+                        `;
+                    }).join('')}
+                </div>
+            `;
+        }
+        function displayTrackingResult(data) {
+            const resultContainer = document.getElementById('trackingResult');
+            const currentStatus = getCurrentStatus(data.historique);
+            
+            // Créer la timeline principale avec 4 étapes
+            const mainTimelineHtml = createMainTimeline(currentStatus.statut, currentStatus.date);
+            
+            let timelineHtml = '';
+            
+            if (data.historique && data.historique.length > 0) {
+                // Trier l'historique par date croissante pour l'affichage
+                const sortedHistory = data.historique.sort((a, b) => new Date(a.date_scan) - new Date(b.date_scan));
+                const latestDate = new Date(currentStatus.date);
+                
+                timelineHtml = sortedHistory.map((item, index) => {
+                    const itemDate = new Date(item.date_scan);
+                    const isLatest = Math.abs(itemDate - latestDate) < 1000; // Moins d'une seconde de différence
+                    const isCompleted = itemDate < latestDate;
+                    
+                    const statusClass = isLatest ? 'active' : (isCompleted ? 'completed' : '');
+                    
+                    return `
+                        <div class="timeline-item ${statusClass}">
+                            <div class="timeline-content">
+                                <div class="timeline-title">
+                                    <i class="fas fa-check-circle"></i> ${item.nouveau_statut}
+                                </div>
+                                ${item.localisation ? `<div class="timeline-location"><i class="fas fa-map-marker-alt"></i> ${item.localisation}</div>` : ''}
+                                ${item.commentaire ? `<div class="timeline-comment">"${item.commentaire}"</div>` : ''}
+                                <div class="timeline-date"><i class="fas fa-clock"></i> ${formatDate(item.date_scan)}</div>
+                            </div>
+                        </div>
+                    `;
+                }).join('');
+            } else {
+                // Affichage basique si pas d'historique
+                timelineHtml = `
+                    <div class="timeline-item active">
+                        <div class="timeline-content">
+                            <div class="timeline-title">
+                                <i class="fas fa-check-circle"></i> Colis enregistré
+                            </div>
+                            <div class="timeline-description">Votre colis a été enregistré dans notre système</div>
+                            <div class="timeline-date"><i class="fas fa-clock"></i> ${formatDate(data.date_enregistrement)}</div>
+                        </div>
+                    </div>
+                `;
+            }
+
+            const html = `
+                <div class="package-header">
+                    <div class="package-info">
+                        <h3>Colis de ${data.destinataire_nom}</h3>
+                        <div class="tracking-number">#${data.numero_suivi}</div>
+                    </div>
+                    <div class="status-badge ${getStatusBadgeClass(currentStatus.statut)}">
+                        ${currentStatus.statut}
+                    </div>
+                </div>
+
+                ${mainTimelineHtml}
+                <div class="current-status">
+                    <h4><i class="fas fa-info-circle"></i> État Actuel</h4>
+                    <div class="status-info">${currentStatus.statut}</div>
+                    <div class="location"><i class="fas fa-map-marker-alt"></i> ${currentStatus.localisation}</div>
+                    ${currentStatus.commentaire ? `<div class="comment">"${currentStatus.commentaire}"</div>` : ''}
+                    <div class="date">Dernière mise à jour: ${formatDate(currentStatus.date)}</div>
+                </div>
+
+                <div class="package-details">
+                    <div class="detail-item">
+                        <div class="detail-label">Destinataire</div>
+                        <div class="detail-value">${data.destinataire_nom}</div>
+                    </div>
+                    <div class="detail-item">
+                        <div class="detail-label">Destination</div>
+                        <div class="detail-value">${data.ville_recuperation}</div>
+                    </div>
+                    <div class="detail-item">
+                        <div class="detail-label">Type</div>
+                        <div class="detail-value">${data.type_colis}</div>
+                    </div>
+                    <div class="detail-item">
+                        <div class="detail-label">Poids</div>
+                        <div class="detail-value">${data.poids_lbs} lbs</div>
+                    </div>
+                    <div class="detail-item">
+                        <div class="detail-label">Description</div>
+                        <div class="detail-value">${data.description_detaillee}</div>
+                    </div>
+                </div>
+
+                <h3 style="color: #001b72; margin-bottom: 1.5rem; font-size: 1.3rem;">
+                    <i class="fas fa-history"></i> Historique du Suivi
+                </h3>
+                
+                <div class="timeline">
+                    ${timelineHtml}
+                </div>
+
+                ${currentStatus.statut !== 'Livré' && data.date_prevue_arrivee ? `
+                    <div class="estimated-delivery">
+                        <h4><i class="fas fa-calendar-alt"></i> Livraison Prévue</h4>
+                        <div class="estimated-date">${formatDate(data.date_prevue_arrivee)}</div>
+                    </div>
+                ` : ''}
+            `;
+
+            resultContainer.innerHTML = html;
+            resultContainer.style.display = 'block';
+            
+            // Scroll vers le résultat
+            resultContainer.scrollIntoView({ behavior: 'smooth' });
+        }
+
+        function displayError(message) {
+            const resultContainer = document.getElementById('trackingResult');
+            resultContainer.innerHTML = `
+                <div class="error-message">
+                    <i class="fas fa-exclamation-triangle"></i>
+                    ${message}
+                </div>
+                <div class="no-result">
+                    <div class="no-result-icon"><i class="fas fa-search"></i></div>
+                    <h3>Aucun Colis Trouvé</h3>
+                    <p>Le numéro de suivi que vous avez saisi n'existe pas dans notre système.</p>
+                    <p>Vérifiez le numéro et réessayez.</p>
+                </div>
+            `;
+            resultContainer.style.display = 'block';
+        }
+
+        // Gestion du formulaire de recherche
+        document.getElementById('trackingForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            const trackingNumber = document.getElementById('trackingNumber').value.trim();
+            const btn = document.getElementById('searchBtn');
+            const originalHTML = btn.innerHTML;
+
+            if (!trackingNumber) {
+                alert('Veuillez entrer un numéro de suivi');
+                return;
+            }
+
+            // Affichage du loading
+            btn.innerHTML = '<div class="loading"></div> Recherche...';
+            btn.disabled = true;
+
+            try {
+                const response = await fetch(`getColis.php?trackingNumber=${encodeURIComponent(trackingNumber)}`);
+                
+                if (!response.ok) {
+                    throw new Error('Erreur serveur: ' + response.status);
+                }
+                
+                const result = await response.json();
+                
+                if (result.success && result.data) {
+                    displayTrackingResult(result.data);
+                } else {
+                    displayError(result.error || 'Colis non trouvé');
+                }
+            } catch (error) {
+                console.error('Erreur:', error);
+                displayError('Erreur de connexion. Veuillez réessayer plus tard.');
+            } finally {
+                btn.innerHTML = originalHTML;
+                btn.disabled = false;
+            }
+        });
+
+        // Auto-focus sur le champ de recherche
+        document.getElementById('trackingNumber').focus();
+    </script>
+</body>
+</html>

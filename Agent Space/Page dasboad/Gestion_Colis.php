@@ -1,12 +1,155 @@
+<?php
+session_start();
+// ----------------------
+// Paramètres base MySQL
+// ----------------------
+$host = "localhost"; 
+$user = "root";       // ton utilisateur MySQL
+$pass = "";           // ton mot de passe MySQL
+$dbname = "Ayitishopship";
+
+// Connexion MySQL
+$conn = new mysqli($host, $user, $pass, $dbname);
+if($conn->connect_error){
+    die("Échec de connexion à la base : " . $conn->connect_error);
+}
+
+// Message d'erreur par défaut
+$error = "";
+
+// Si l'agent n'est pas connecté, redirige vers la page de connexion
+if(!isset($_SESSION['agent_id'])){
+    header("Location: login.php");
+    exit;
+}
+
+//  // Préparer la requête
+$agent_id = $_SESSION['agent_id'];
+$stmt = $conn->prepare("SELECT nom_complet, role FROM Agents WHERE id = ?");
+$stmt->bind_param("i", $agent_id);
+$stmt->execute();
+$result = $stmt->get_result();
+$agent = $result->fetch_assoc();
+
+
+// Récupérer les infos de session
+$nom_complet = $_SESSION['nom_complet'];
+$role = $_SESSION['role'];
+?>
+
 <!DOCTYPE html>
-<html lang="fr">
+<html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Enregistrement de Colis - AyitiShop&Ship</title>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dashboard Sidebar Menu</title>
+  <!-- CSS -->
+  <link rel="stylesheet" href="style.css">
+  <!-- Boxicons CSS -->
+  <link href='https://unpkg.com/boxicons@2.1.1/css/boxicons.min.css' rel='stylesheet'>
+   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/qrcode/build/qrcode.min.js"></script>
+</head>
+<body>
+  <!-- Sidebar navigation menu -->
+  <nav class="sidebar close">
+    <!-- Sidebar header containing logo and toggle button -->
+    <header>
+      <div class="image-text">
+        <span class="image">
+          <img src="../logo.png" alt="Logo">
+        </span>
+        <div class="text logo-text">
+          <span class="name">AYITISHOP&SHIP</span>
+          <span class="profession">Ship USA to Haiti</span>
+        </div>
+      </div>
+      <i class='bx bx-chevron-right toggle'></i>
+    </header>
+
+    <!-- Sidebar menu items -->
+    <div class="menu-bar">
+      <div class="menu">
+        <li>
+          <i class='bx  bx-user icon'  ></i> 
+          <span class="text nav-text"><strong><?= htmlspecialchars($_SESSION['nom_complet']) ?></strong></p>
+          <p>Rôle : <strong><?= htmlspecialchars($_SESSION['role']) ?></strong></p></span>
+        </li>
+        <!-- Search box within the sidebar -->
+        <li class="search-box">
+          <i class='bx bx-search icon'></i>
+          <input type="text" placeholder="Search...">
+        </li>
+        <!-- List of menu links -->
+        <ul class="menu-links">
+          <li class="nav-link">
+            <a href="../dashboard">
+              <i class='bx bx-home-alt icon'></i>
+              <span class="text nav-text">Dashboard</span>
+            </a>
+          </li>
+          <li class="nav-link">
+            <a href="#">
+              <i class='bx  bx-package icon'  ></i> 
+              <span class="text nav-text">Gestion des Colis</span>
+            </a>
+          </li>
+           <li class="nav-link">
+            <a href="Testsuivi.html">
+              <i class='bx  bx-qr-scan icon'  ></i> 
+              <span class="text nav-text">Suivi des Colis</span>
+            </a>
+          </li>
+           <li class="nav-link">
+            <a href="#">
+              <i class='bx  bx-group icon'  ></i>   
+              <span class="text nav-text">Client</span>
+            </a>
+          </li>
+          <li class="nav-link">
+            <a href="#">
+              <i class='bx bx-bell icon'></i>
+              <span class="text nav-text">Notifications</span>
+            </a>
+          </li>
+         
+          <li class="nav-link">
+            <a href="#">
+              <i class='bx bx-wallet icon'></i>
+              <span class="text nav-text">Wallets</span>
+            </a>
+          </li>
+        </ul>
+      </div>
+
+      <!-- Bottom content of the sidebar -->
+      <div class="bottom-content">
+        <li>
+          <a href="../Login.php">
+            <i class='bx bx-log-out icon'></i>
+            <span class="text nav-text">Logout</span>
+          </a>
+        </li>
+        <!-- Dark mode toggle switch -->
+        <li class="mode">
+          <div class="sun-moon">
+            <i class='bx bx-moon icon moon'></i>
+            <i class='bx bx-sun icon sun'></i>
+          </div>
+          <span class="mode-text text">Dark mode</span>
+          <div class="toggle-switch">
+            <span class="switch"></span>
+          </div>
+        </li>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Main content section -->
+  <section class="home">
+    <div>
+   
     <style>
         * {
             margin: 0;
@@ -61,7 +204,7 @@
         }
 
         .page-title {
-            font-size: 2.5rem;
+            font-size: 1.5rem;
             font-weight: 700;
             color: #001b72;
             margin-bottom: 1rem;
@@ -102,7 +245,7 @@
         }
 
         .section-title {
-            font-size: 1.25rem;
+            font-size: 1rem;
             font-weight: 600;
             color: #001b72;
             margin-bottom: 1rem;
@@ -134,6 +277,7 @@
         .form-group label {
             display: block;
             font-weight: 600;
+            font-size: 1.25rem;
             color: #001b72;
             margin-bottom: 0.5rem;
         }
@@ -375,13 +519,9 @@
 </head>
 <body>
     <div class="container">
-        <div class="header">
-            <a href="index.html" class="back-btn">
-                <i class="fas fa-arrow-left"></i>
-                Retour à l'accueil
-            </a>
+        <div class="header">    
              <div class="logo">
-                <img src="public/LOGO.png" alt="AyitiShop&Ship Logo" id="logo">
+                <img src="../LOGO.png" alt="AyitiShop&Ship Logo" id="logo">
             </div>
             <h1 class="page-title">Enregistrement de Colis</h1>
             <p class="page-subtitle">
@@ -390,7 +530,7 @@
         </div>
 
         <div class="form-container">
-            <form id="colisForm" enctype="multipart/form-data" action="./Savecolis.php" method="post">
+            <form id="colisForm" enctype="multipart/form-data" action="Savecolis.php" method="post">
                 <div class="form-sections">
                     <!-- Section Expéditeur -->
                     <div class="form-section">
@@ -404,8 +544,8 @@
                                 <input type="text" id="expediteur_nom" name="expediteur[nom_complet]" required>
                             </div>
                             <div class="form-group">
-                                <label for="expediteur_telephone">Téléphone <span class="required">*</span></label>
-                                <input type="tel" id="expediteur_telephone" name="expediteur[telephone]" required>
+                                <label for="expediteur_telephone">Téléphone <span class="required"></span></label>
+                                <input type="tel" id="expediteur_telephone" name="expediteur[telephone]">
                             </div>
                             <div class="form-group">
                                 <label for="expediteur_email">Email <span class="required">*</span></label>
@@ -442,7 +582,7 @@
                                 <input type="tel" id="destinataire_telephone" name="destinataire[telephone]" required>
                             </div>
                             <div class="form-group">
-                                <label for="destinataire_email">Email</label>
+                                <label for="destinataire_email">Email<span class="required">*</span></label>
                                 <input type="email" id="destinataire_email" name="destinataire[email]">
                             </div>
                             <div class="form-group full-width">
@@ -700,13 +840,13 @@
             
             if (poids > 0 && ville) {
                 const tarifs = {
-                    'Port-au-Prince': 4.20,
-                    'Cap-Haïtien': 5.0,
-                    'Les Cayes': 6.0
+                    'Port-au-Prince': 3.5,
+                    'Cap-Haïtien': 4.0,
+                    'Les Cayes': 5.0
                 };
                 
                 const fraisFixes = 10.0;
-                const tarifParLb = tarifs[ville];
+                const tarifParLb = tarifs[ville];   
                 const coutTotal = (poids * tarifParLb) + fraisFixes;
                 
                 document.getElementById('calculatedPrice').textContent = `$${coutTotal.toFixed(2)}`;
@@ -943,7 +1083,7 @@
         </div>
     <div class="brand">
        <div class="logo">
-                <img src="public/LOGO.png" alt="AyitiShop&Ship Logo" id="logo">
+                <img src="../LOGO.png" alt="AyitiShop&Ship Logo" id="logo">
             </div>
       <p><strong>Shipping from USA to Haiti</strong></p>
     </div>
@@ -974,5 +1114,10 @@
 }
 
     </script>
+    </div>
+  </section>
+
+  <!-- JavaScript file -->
+  <script src="script.js"></script>
 </body>
 </html>
