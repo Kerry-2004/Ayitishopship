@@ -100,6 +100,7 @@ export const AgentDashboard: React.FC = () => {
                 <button onClick={() => setActiveTab('parametres')}>
                   Paramètres
                 </button>
+                {activeTab === 'parametres' && <Parametres />}
               </div>
               <button
                 onClick={handleDeconnexion}
