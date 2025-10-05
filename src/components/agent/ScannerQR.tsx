@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { Html5Qrcode } from 'html5-qrcode';
 import { mettreAJourStatut } from '../../services/colisService';
+
+declare const Html5Qrcode: any;
 
 interface Props {
   agentId: string;
