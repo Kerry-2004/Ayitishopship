@@ -26,7 +26,7 @@ export const AgentLogin: React.FC = () => {
     setLoading(true);
 
     try {
-      const result = await connexionAgent(email);
+      const result = await connexionAgent(email, password);
 
       if (result.success) {
         navigate('/agent-space/dashboard');
