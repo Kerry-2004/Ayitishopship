@@ -6,20 +6,9 @@ import { EnregistrementColis } from '../components/agent/EnregistrementColis';
 import { ScannerQR } from '../components/agent/ScannerQR';
 import { HistoriqueColis } from '../components/agent/HistoriqueColis';
 import { StatistiquesDashboard } from '../components/agent/StatistiquesDashboard';
-import { Parametres } from './Parametres';
 
-// Ajouter dans type
 type TabType = 'dashboard' | 'enregistrer' | 'scanner' | 'historique' | 'parametres';
 
-// Ajouter le bouton
-<button onClick={() => setActiveTab('parametres')}>
-  Paramètres
-</button>
-
-// Ajouter le rendu
-{activeTab === 'parametres' && <Parametres />}
-
-type TabType = 'dashboard' | 'enregistrer' | 'scanner' | 'historique';
 
 export const AgentDashboard: React.FC = () => {
   const [activeTab, setActiveTab] = useState<TabType>('dashboard');
@@ -108,6 +97,9 @@ export const AgentDashboard: React.FC = () => {
               <div className="text-right hidden sm:block">
                 <p className="text-sm font-medium text-gray-900">{agent?.nom_complet}</p>
                 <p className="text-xs text-gray-500 capitalize">{agent?.role}</p>
+                <button onClick={() => setActiveTab('parametres')}>
+                  Paramètres
+                </button>
               </div>
               <button
                 onClick={handleDeconnexion}
@@ -227,6 +219,7 @@ export const AgentDashboard: React.FC = () => {
           {activeTab === 'historique' && (
             <HistoriqueColis />
           )}
+          {activeTab === 'parametres' && <Parametres />}
         </div>
       </div>
     </div>
