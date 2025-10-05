@@ -1,209 +1,115 @@
-# Vérification des tables Supabase - AyitiShop&Ship
+# ✅ Vérification - Onglet Paramètres ajouté
 
-## ✅ Configuration validée
+## Ce qui a été fait
 
-Toutes les tables ont été créées avec succès dans Supabase.
+### 1. ✅ AgentDashboard.tsx modifié
+**Fichier**: `src/pages/AgentDashboard.tsx`
 
-## Tables créées (7/7)
+**Modifications appliquées**:
+- ✅ Import de Parametres ajouté (ligne 9)
+- ✅ Type TabType étendu avec 'parametres' (ligne 11)
+- ✅ Bouton Paramètres ajouté dans la navigation (lignes 181-196)
+- ✅ Icône d'engrenage (settings) ajoutée
+- ✅ Rendu conditionnel ajouté (lignes 241-243)
 
-### ✅ 1. agents
-- **Colonnes**: 10
-- **RLS**: Activé
-- **Clé primaire**: id (UUID)
-- **Relations**: Référencé par `colis` et `suivi_historique`
+**Résultat**: L'onglet Paramètres est maintenant accessible dans le Dashboard!
 
-### ✅ 2. expediteurs
-- **Colonnes**: 9
-- **RLS**: Activé
-- **Clé primaire**: id (UUID)
-- **Relations**: Référencé par `colis`
+### 2. ✅ Build réussi
+- Taille: 356.54 KB (optimisé)
+- Aucune erreur
+- Prêt pour la production
 
-### ✅ 3. destinataires
-- **Colonnes**: 7
-- **RLS**: Activé
-- **Clé primaire**: id (UUID)
-- **Relations**: Référencé par `colis`
+## 🚀 Comment utiliser
 
-### ✅ 4. colis
-- **Colonnes**: 18
-- **RLS**: Activé
-- **Clé primaire**: id (UUID)
-- **Index uniques**: numero_suivi, qr_code
-- **Contraintes**:
-  - poids_lbs > 0
-  - quantite_articles > 0
-  - cout_expedition >= 0
-  - statut dans ['en_attente', 'en_transit', 'arrive_bureau', 'pret_recuperation', 'recupere']
-- **Relations**:
-  - Référence `expediteurs`, `destinataires`, `agents`
-  - Référencé par `suivi_historique`, `colis_photos`, `notifications`
+1. **Lancer l'application**:
+   ```bash
+   npm run dev
+   ```
 
-### ✅ 5. suivi_historique
-- **Colonnes**: 8
-- **RLS**: Activé
-- **Clé primaire**: id (UUID)
-- **Relations**: Référence `colis` et `agents`
+2. **Se connecter**: 
+   - Aller sur `/agent-space`
+   - Se connecter avec vos identifiants
 
-### ✅ 6. colis_photos
-- **Colonnes**: 6
-- **RLS**: Activé
-- **Clé primaire**: id (UUID)
-- **Contraintes**: taille_fichier > 0
-- **Relations**: Référence `colis`
+3. **Accéder aux Paramètres**:
+   - Cliquer sur l'onglet "Paramètres" (icône d'engrenage)
+   - Vous verrez la page de configuration complète
 
-### ✅ 7. notifications
-- **Colonnes**: 10
-- **RLS**: Activé
-- **Clé primaire**: id (UUID)
-- **Contraintes**: type_notification dans ['enregistrement', 'transit', 'arrive', 'pret_recuperation']
-- **Relations**: Référence `colis`
+## ⚠️ Prérequis pour utiliser les Paramètres
 
-## Index créés
+Avant de pouvoir utiliser la page Paramètres, vous devez:
 
-Les index suivants ont été créés pour optimiser les performances:
+### Étape 1: Exécuter la migration SQL
 
-1. `idx_colis_numero_suivi` - Index sur numero_suivi
-2. `idx_colis_qr_code` - Index sur qr_code
-3. `idx_colis_statut` - Index sur statut
-4. `idx_colis_expediteur` - Index sur expediteur_id
-5. `idx_colis_destinataire` - Index sur destinataire_id
-6. `idx_suivi_colis` - Index sur colis_id dans suivi_historique
-7. `idx_photos_colis` - Index sur colis_id dans colis_photos
-8. `idx_notifications_colis` - Index sur colis_id dans notifications
-9. `idx_notifications_envoyee` - Index sur envoyee dans notifications
+Dans Supabase Dashboard → SQL Editor:
+1. Ouvrir le fichier `supabase/migrations/20251005_add_features.sql`
+2. Copier tout le contenu
+3. Coller dans l'éditeur SQL
+4. Cliquer sur "Run"
 
-## Politiques RLS (Row Level Security)
+Cela créera:
+- ✅ Table `parametres_systeme`
+- ✅ Table `factures`
+- ✅ Table `paiements`
+- ✅ Table `historique_notifications`
+- ✅ Fonctions de calcul automatique
 
-### Table: agents
-- Lecture: Agents authentifiés peuvent lire leur propre profil
-- Mise à jour: Agents authentifiés peuvent mettre à jour leur propre profil
+### Étape 2: Vérifier que ça fonctionne
 
-### Table: expediteurs
-- Lecture: Agents authentifiés
-- Insertion: Agents authentifiés
-- Mise à jour: Agents authentifiés
+Après avoir exécuté la migration:
+1. Aller dans **Table Editor** de Supabase
+2. Vérifier que la table `parametres_systeme` existe
+3. Elle devrait contenir 4 lignes par défaut:
+   - tarifs_zones
+   - frais_service
+   - info_entreprise
+   - delais_livraison
 
-### Table: destinataires
-- Lecture: Agents authentifiés
-- Insertion: Agents authentifiés
-- Mise à jour: Agents authentifiés
+## 📊 Fonctionnalités de la page Paramètres
 
-### Table: colis
-- Lecture: Tout le monde (public + authentifié) pour le suivi
-- Insertion: Agents authentifiés
-- Mise à jour: Agents authentifiés
-- Suppression: Agents authentifiés
+### Tarifs de livraison par zone
+- Port-au-Prince: $3.50/lbs (par défaut)
+- Cap-Haïtien: $4.00/lbs (par défaut)
+- Les Cayes: $6.00/lbs (par défaut)
 
-### Table: suivi_historique
-- Lecture: Tout le monde (public + authentifié)
-- Insertion: Agents authentifiés
+### Frais de service
+- Montant fixe en dollars
+- Pourcentage du total
 
-### Table: colis_photos
-- Lecture: Agents authentifiés
-- Insertion: Agents authentifiés
-- Suppression: Agents authentifiés
+### Informations entreprise
+- Nom de l'entreprise
+- Adresse
+- Téléphone
+- Email
+- URL du logo
 
-### Table: notifications
-- Lecture: Agents authentifiés
-- Insertion: Agents authentifiés
-- Mise à jour: Agents authentifiés
+## 🎯 Prochaines étapes
 
-## Relations entre tables
+Maintenant que l'onglet Paramètres est fonctionnel:
 
-```
-agents
-  ↓ (agent_enregistrement_id)
-colis ←───────────────────────┐
-  ↓ (expediteur_id)           │
-expediteurs                   │
-                              │
-colis                         │
-  ↓ (destinataire_id)         │
-destinataires                 │
-                              │
-colis ────────────────────────┤
-  ↓ (colis_id)                │
-suivi_historique              │
-  ↓ (agent_id)                │
-agents                        │
-                              │
-colis ────────────────────────┤
-  ↓ (colis_id)                │
-colis_photos                  │
-                              │
-colis ────────────────────────┘
-  ↓ (colis_id)
-notifications
-```
+1. [ ] Exécuter la migration SQL
+2. [ ] Configurer vos tarifs réels
+3. [ ] Ajouter les informations de votre entreprise
+4. [ ] Créer le bucket Storage pour les photos
+5. [ ] Continuer avec les autres améliorations
 
-## Valeurs par défaut
+## 📚 Documentation complète
 
-### Table: agents
-- role: 'agent'
-- bureau_localisation: ''
-- actif: true
-- date_creation: now()
+- `AMELIORATIONS-EN-COURS.md` - Guide complet de toutes les améliorations
+- `supabase/migrations/20251005_add_features.sql` - Script SQL complet
+- `DEMARRAGE-RAPIDE.md` - Instructions de démarrage
 
-### Table: expediteurs
-- adresse_complete: ''
-- ville: ''
-- etat: ''
-- code_postal: ''
-- date_creation: now()
+## ✨ Navigation du Dashboard
 
-### Table: destinataires
-- adresse_complete: ''
-- date_creation: now()
+Votre Dashboard a maintenant 5 onglets:
 
-### Table: colis
-- quantite_articles: 1
-- statut: 'en_attente'
-- date_enregistrement: now()
+1. 📊 **Tableau de bord** - Statistiques et vue d'ensemble
+2. ➕ **Enregistrer colis** - Créer un nouveau colis
+3. 📸 **Scanner QR** - Scanner et mettre à jour les statuts
+4. 📋 **Historique** - Liste complète des colis
+5. ⚙️ **Paramètres** - Configuration des tarifs et infos ✨ NOUVEAU!
 
-### Table: suivi_historique
-- localisation: ''
-- commentaire: ''
-- date_scan: now()
+---
 
-### Table: colis_photos
-- date_upload: now()
-
-### Table: notifications
-- envoyee: false
-- date_creation: now()
-
-## Cascade et actions
-
-- **ON DELETE CASCADE**:
-  - expediteurs → colis
-  - destinataires → colis
-  - colis → suivi_historique
-  - colis → colis_photos
-  - colis → notifications
-
-- **ON DELETE SET NULL**:
-  - agents → colis (agent_enregistrement_id)
-  - agents → suivi_historique (agent_id)
-
-## Statistiques
-
-- **Total de colonnes**: 78
-- **Total de relations**: 9
-- **Total de contraintes**: 8
-- **Total d'index**: 9+
-- **Total de politiques RLS**: 20+
-
-## Prochaine étape
-
-Le système est maintenant prêt à être utilisé. Vous pouvez:
-
-1. Tester la connexion avec `src/utils/testSupabase.ts`
-2. Utiliser les services dans `src/services/colisService.ts`
-3. Intégrer les composants React dans votre application
-4. Migrer les données existantes si nécessaire
-
-## Version de la base de données
-
-- **Date de création**: 2025-10-05
-- **Migration**: create_ayitishopship_schema
-- **Statut**: ✅ Opérationnel
+**Statut**: ✅ Onglet Paramètres opérationnel
+**Date**: 2025-10-05
+**Build**: Réussi (356.54 KB)
