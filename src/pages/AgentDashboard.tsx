@@ -97,7 +97,7 @@ export const AgentDashboard: React.FC = () => {
               <div className="text-right hidden sm:block">
                 <p className="text-sm font-medium text-gray-900">{agent?.nom_complet}</p>
                 <p className="text-xs text-gray-500 capitalize">{agent?.role}</p>
-                <button onClick={() => setActiveTab('parametres')} {activeTab === 'parametres' && <Parametres />}>
+                <button onClick={() => setActiveTab('parametres')}>
                   Paramètres
                 </button>
               </div>
